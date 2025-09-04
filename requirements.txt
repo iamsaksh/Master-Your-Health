@@ -5,7 +5,7 @@ supabase==2.18.1
 openai==1.98.0
 bcrypt==3.2.0
 pandas==1.5.0
-Pillow==9.3.0
+Pillow==10.4.0
 matplotlib==3.6.0
 python-dotenv==1.1.1
 requests==2.32.4
