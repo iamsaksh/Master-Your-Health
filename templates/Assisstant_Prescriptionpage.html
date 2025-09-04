@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assisstant Prescription</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+      color: #333;
+      background-color: #f9f9f9;
+      line-height: 1.6;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    :root {
+      --primary-color: #578dcb;
+      --title-color: #4f90d0;
+      --dark-color: #19538b;
+      --light-color: #f5f8fc;
+      --border-color: #d9e3f1;
+      --font-color: #333;
+      --error-color: #e74c3c;
+      --success-color: #2ecc71;
+    }
+
+    .container {
+      position: relative;
+      margin-bottom: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      border-bottom: 2px solid var(--primary-color);
+      padding: 20px 30px;
+      background-color: var(--light-color);
+    }
+
+    .header h2 {
+      color: var(--dark-color);
+      margin: 0;
+      font-weight: 600;
+      font-size: 1.8rem;
+    }
+
+    #currentDate {
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+
+    /* Navbar */
+    nav {
+      background: white;
+      padding: 15px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      left: 0;
+      background-color: var(--dark-color);
+      box-sizing: border-box;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: white;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li {
+      display: inline-block;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      padding: 10px 20px;
+      border-radius: 25px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .nav-links a:not(.logout-btn):hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .logout-btn {
+      color: white;
+    }
+
+    .logout-btn:hover {
+      background: #dc3545 !important;
+      color: white !important;
+    }
+
+    .container {
+      position: relative;
+      margin-top: 100px;
+    }
+
+    .search-container {
+      padding: 20px 30px;
+    }
+
+    .search-input {
+      padding: 15px 20px;
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
+      width: 100%;
+      font-size: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(87, 141, 203, 0.2);
+    }
+
+    #searchResults {
+      position: absolute;
+      width: calc(100% - 60px);
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      z-index: 1000;
+      max-height: 200px;
+      overflow-y: auto;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin: 0 30px;
+    }
+
+    #searchResults div {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color 0.2s;
+    }
+
+    #searchResults div:hover {
+      background-color: var(--light-color);
+      cursor: pointer;
+    }
+
+    #tabContainer {
+      position: relative;
+      z-index: 1;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid var(--border-color);
+      background-color: var(--light-color);
+      border-radius: 10px 10px 0 0;
+      overflow: hidden;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      padding: 15px 25px;
+      cursor: pointer;
+      background-color: var(--light-color);
+      transition: all 0.3s ease;
+      font-weight: 500;
+      color: var(--font-color);
+    }
+
+    .tab:hover {
+      background-color: rgba(79, 144, 208, 0.1);
+    }
+
+    .tab-content {
+      display: none;
+      border: 1px solid var(--border-color);
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      padding: 30px;
+      background-color: #fff;
+    }
+
+    .tab.active {
+      background-color: #fff;
+      border-top: 3px solid var(--dark-color);
+      font-weight: 600;
+      color: var(--dark-color);
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .tab-content h3 {
+      color: var(--title-color);
+      margin-top: 0;
+      border-bottom: 1px solid var(--primary-color);
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    label {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 8px;
+      color: var(--dark-color);
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      transition: border 0.3s, box-shadow 0.3s;
+      box-sizing: border-box;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(87, 141, 203, 0.2);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    button {
+      padding: 12px 25px;
+      background-color: var(--dark-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.3s;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      background-color: #0e3d6b;
+    }
+
+    .status-message {
+      color: var(--success-color);
+      display: none;
+      margin-top: 15px;
+      padding: 10px 15px;
+      background-color: rgba(46, 204, 113, 0.1);
+      border-radius: 8px;
+      font-weight: 500;
+    }
+
+    #loadingSpinner {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: rgba(79, 144, 208, 0.1);
+      border-radius: 8px;
+      text-align: center;
+      color: var(--dark-color);
+    }
+
+    #analysisInfo textarea {
+      background-color: var(--light-color);
+      border: 1px solid var(--border-color);
+      padding: 15px;
+    }
+
+    #errorMessage {
+      padding: 12px 20px;
+      background-color: rgba(231, 76, 60, 0.1);
+      border-radius: 8px;
+      color: var(--error-color);
+      margin: 20px 30px;
+    }
+
+    /* Menu toggle for mobile */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .menu-toggle span {
+      width: 25px;
+      height: 3px;
+      background-color: white;
+      margin: 3px 0;
+      border-radius: 3px;
+      transition: 0.4s;
+    }
+
+    /* Media Queries */
+    @media screen and (max-width: 1200px) {
+      body {
+        padding: 15px;
+      }
+
+      .container {
+        margin-top: 80px;
+      }
+    }
+
+    @media screen and (max-width: 992px) {
+      .header {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+      }
+
+      .tab {
+        padding: 12px 20px;
+      }
+
+      nav {
+        padding: 15px 30px;
+      }
+
+      .nav-links {
+        gap: 10px;
+      }
+
+      .nav-links a {
+        padding: 8px 15px;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        margin-top: 70px;
+      }
+
+      .header h2 {
+        font-size: 1.5rem;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      .nav-links {
+        position: fixed;
+        left: 0;
+        top: 70px;
+        flex-direction: column;
+        background-color: var(--dark-color);
+        width: 100%;
+        text-align: center;
+        transform: translateY(-100%);
+        transition: transform 0.4s ease;
+        padding: 0;
+        margin: 0;
+        gap: 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-links.active {
+        transform: translateY(0);
+      }
+
+      .nav-links li {
+        width: 100%;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 15px;
+        width: 100%;
+        border-radius: 0;
+      }
+
+      .tabs {
+        flex-direction: column;
+        border-radius: 10px;
+      }
+
+      .tab {
+        border-bottom: 1px solid var(--border-color);
+        border-radius: 0;
+        text-align: center;
+      }
+
+      .tab:first-child {
+        border-radius: 10px 10px 0 0;
+      }
+
+      .tab:last-child {
+        border-radius: 0 0 10px 10px;
+      }
+
+      .tab.active {
+        border-left: 3px solid var(--dark-color);
+        border-top: none;
+      }
+
+      .tab-content {
+        padding: 20px 15px;
+      }
+
+      button {
+        width: 100%;
+        margin-right: 0;
+      }
+    }
+
+    @media screen and (max-width: 576px) {
+      body {
+        padding: 5px;
+      }
+
+      .container {
+        margin-top: 60px;
+      }
+
+      .header {
+        padding: 15px;
+      }
+
+      .search-container {
+        padding: 15px;
+      }
+
+      .search-input {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+
+      #searchResults {
+        width: calc(100% - 30px);
+        margin: 0 15px;
+      }
+
+      .tab-container {
+        margin: 15px;
+      }
+
+      nav {
+        padding: 10px 15px;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+      }
+
+      .tab-content h3 {
+        font-size: 1.2rem;
+      }
+
+      input,
+      textarea {
+        padding: 10px;
+        font-size: 13px;
+      }
+
+      label {
+        font-size: 14px;
+      }
+    }
+
+    /* Mobile menu JavaScript support */
+    .mobile-menu-active .menu-toggle span:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .mobile-menu-active .menu-toggle span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-active .menu-toggle span:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="logo">Assisstant Prescription</div>
+    <div class="menu-toggle" onclick="toggleMobileMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/assisstant_home">Home</a></li>
+      <li><a href="/assisstant_home/prescription">View Patient Records</a></li>
+      <li><a href="/registration">Register New Patient</a></li>
+      <li>
+        <a href="/login" class="logout-btn" onclick="confirmLogout()">Logout</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="container">
+    <div class="header">
+      <h2>Prescription</h2>
+      <div id="currentDate"></div>
+    </div>
+
+    <div class="search-container">
+      <input type="text" class="search-input" id="searchInput"
+        placeholder="Search for patients by name, ID, or phone number..." autocomplete="off"
+        onkeyup="dynamicSearch()" />
+      <div id="searchResults"></div>
+    </div>
+
+    <div id="errorMessage" style="color: red; display: none">
+      Patient not found
+    </div>
+
+    <div class="tab-container" id="tabContainer">
+      <div class="tabs">
+        <div class="tab" data-content="personalInfo">Personal Info</div>
+        <div class="tab" data-content="medicalInfo">Medical History</div>
+        <div class="tab" data-content="lifestyleInfo">Lifestyle</div>
+        </div>
+      </div>
+
+      <div id="personalInfo" class="tab-content">
+        <h3>Personal Information</h3>
+        <input type="hidden" id="patientId" />
+        <label for="editName">Name:</label>
+        <input type="text" id="editName" />
+        <label for="editDob">Date of Birth:</label>
+        <input type="date" id="editDob" />
+        <label for="editAge">Age:</label>
+        <input type="text" id="editAge" disabled />
+        <label for="editLocation">Location:</label>
+        <input type="text" id="editLocation" />
+        <label for="editOccupation">Occupation:</label>
+        <input type="text" id="editOccupation" />
+        <button onclick="savePatientDetails()">Save</button>
+        <p class="status-message" id="statusPatient">Saved successfully!</p>
+      </div>
+
+      <div id="medicalInfo" class="tab-content">
+        <h3>Medical History</h3>
+        <label for="editWeight">Weight (kg):</label>
+        <input type="number" id="editWeight" />
+
+        <label for="editHeight">Height (cm):</label>
+        <input type="number" id="editHeight" />
+
+        <label for="editBloodGroup">Blood Group:</label>
+        <input type="text" id="editBloodGroup" />
+
+        <label for="editMedicalHistory">Medical History:</label>
+        <textarea id="editMedicalHistory"></textarea>
+
+        <label for="editCurrentHealthConditions">Current Health Conditions:</label>
+        <textarea id="editCurrentHealthConditions"></textarea>
+
+        <label for="editTreatmentDetails">Treatment Details:</label>
+        <textarea id="editTreatmentDetails"></textarea>
+
+        <label for="editFitnessGoal">Fitness Goal:</label>
+        <input type="text" id="editFitnessGoal" />
+
+        <label for="editAllergies">Allergies:</label>
+        <textarea id="editAllergies"></textarea>
+
+        <label for="editSmoking">Smoking (Yes/No):</label>
+        <input type="text" id="editSmoking" />
+
+        <label for="editDrinking">Drinking (Yes/No):</label>
+        <input type="text" id="editDrinking" />
+
+        <label for="editSleepPattern">Sleep Pattern:</label>
+        <textarea id="editSleepPattern"></textarea>
+
+        <button onclick="saveMedicalInfo()">Save</button>
+        <p class="status-message" id="statusMedical">Saved successfully!</p>
+      </div>
+
+      <div id="lifestyleInfo" class="tab-content">
+        <h3>Lifestyle</h3>
+        <label for="editDay1Lifestyle">Day 1 Recall:</label>
+        <input type="text" id="editDay1Lifestyle" />
+        <label for="editDay2Lifestyle">Day 2 Recall:</label>
+        <input type="text" id="editDay2Lifestyle" />
+        <label for="editDay3Lifestyle">Day 3 Recall:</label>
+        <input type="text" id="editDay3Lifestyle" />
+        <button onclick="saveLifestyleInfo()">Save</button>
+        <p class="status-message" id="statusRecall">Saved successfully!</p>
+      </div>
+
+      <div id="prescriptionInfo" class="tab-content">
+        <h3>Prescriptions</h3>
+        <button onclick="generatePrescriptions()">
+          Generate and Display
+        </button>
+        <button onclick="savePrescription()">Save</button>
+        <label for="editDietPrescription">Diet Prescription:</label>
+        <textarea id="editDietPrescription" style="height: 150px"></textarea>
+        <label for="editStructuredDietChart">Structured Diet Chart:</label>
+        <textarea id="editStructuredDietChart" style="height: 150px"></textarea>
+        <label for="editExercisePrescription">Exercise Prescription:</label>
+        <textarea id="editExercisePrescription" style="height: 150px"></textarea>
+        <label for="editMedicalPrescription">Medical Prescription:</label>
+        <textarea id="editMedicalPrescription" style="height: 150px"></textarea>
+        <p class="status-message" id="statusPrescription">
+          Saved successfully!
+        </p>
+      </div>
+
+      <div id="analysisInfo" class="tab-content">
+        <h3>Nutritional Analysis</h3>
+        <textarea id="analysisResultsText" style="width: 100%; height: 200px" readonly></textarea>
+        <div id="analysisResults"></div>
+      </div>
+      <div id="loadingSpinner" style="display: none">
+        <p>🔄 Analyzing nutritional data... Please wait</p>
+      </div>
+    </div>
+
+    <div id="loadingSpinner" style="display: none">
+      <p>🔄 Generating prescription... Please wait</p>
+    </div>
+  </div>
+  <script>
+    const currentDate = new Date();
+    document.getElementById('currentDate').textContent = currentDate.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const navLinks = document.getElementById('navLinks');
+      navLinks.classList.toggle('active');
+      document.querySelector('nav').classList.toggle('mobile-menu-active');
+    }
+
+    // Close mobile menu when a link is clicked
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          document.getElementById('navLinks').classList.remove('active');
+          document.querySelector('nav').classList.remove('mobile-menu-active');
+        }
+      });
+    });
+
+    function dynamicSearch() {
+      let query = document.getElementById('searchInput').value.trim();
+      let resultsContainer = document.getElementById('searchResults');
+
+      if (query === '') {
+        resultsContainer.innerHTML = '';
+        return;
+      }
+
+      fetch(`http://127.0.0.1:5000/search?query=${query}`)
+        .then(response => response.json())
+        .then(data => {
+          resultsContainer.innerHTML = '';
+          if (data.length > 0) {
+            data.forEach(patient => {
+              let div = document.createElement('div');
+              div.innerText = `${patient.name} - ${patient.patient_id} (${patient.phone_number})`;
+              div.style.cursor = 'pointer';
+              div.onclick = () => loadPatientDetails(patient.patient_id);
+              resultsContainer.appendChild(div);
+            });
+          } else {
+            resultsContainer.innerHTML = 'No patients found';
+          }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    }
+
+    function loadPatientDetails(patient_id) {
+      document.getElementById('patientId').value = patient_id;
+      document.getElementById('tabContainer').style.display = 'block';
+
+      fetch(`http://127.0.0.1:5000/patients/${patient_id}`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('editName').value = data.name || '';
+          document.getElementById('editDob').value = data.dob || '';
+          document.getElementById('editLocation').value = data.location || '';
+          document.getElementById('editOccupation').value = data.occupation || '';
+
+          // Check if DOB exists and log it
+          if (data.dob) {
+            let dob = new Date(data.dob);
+            let age = calculateAge(dob);
+            console.log(`Date of Birth: ${data.dob}, Calculated Age: ${age}`);
+            document.getElementById('editAge').value = age; // Set the age in the input field
+          } else {
+            console.error('DOB is missing or invalid');
+          }
+        });
+
+      fetch(`http://127.0.0.1:5000/patients/${patient_id}/info`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('editWeight').value = data.weight || '';
+          document.getElementById('editHeight').value = data.height || '';
+          document.getElementById('editBloodGroup').value = data.blood_group || '';
+          document.getElementById('editMedicalHistory').value = data.medical_history || '';
+          document.getElementById('editMedicalPrescription').value = data.medical_prescription || '';
+          document.getElementById('editDietPrescription').value = data.diet_prescription || '';
+          document.getElementById('editStructuredDietChart').value = data.structured_diet_chart || '';
+          document.getElementById('editExercisePrescription').value = data.exercise_prescription || '';
+          document.getElementById('editCurrentHealthConditions').value = data.current_health_conditions || '';
+          document.getElementById('editTreatmentDetails').value = data.treatment_details || '';
+          document.getElementById('editFitnessGoal').value = data.fitness_goal || '';
+          document.getElementById('editAllergies').value = data.allergies || '';
+          document.getElementById('editSmoking').value = data.smoking || '';
+          document.getElementById('editDrinking').value = data.drinking || '';
+          document.getElementById('editSleepPattern').value = data.sleep_pattern || '';
+        });
+
+
+      fetch(`http://127.0.0.1:5000/patients/${patient_id}/getDiet`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('editDay1Lifestyle').value = data.day1_meal || '';
+          document.getElementById('editDay2Lifestyle').value = data.day2_meal || '';
+          document.getElementById('editDay3Lifestyle').value = data.day3_meal || '';
+        });
+    }
+
+    function savePatientDetails() {
+      let patient_id = document.getElementById('patientId').value;
+      let updatedPatient = {
+        name: document.getElementById('editName').value,
+        dob: document.getElementById('editDob').value,
+        location: document.getElementById('editLocation').value,
+        occupation: document.getElementById('editOccupation').value
+      };
+
+      saveData(`/patients/${patient_id}`, updatedPatient, "statusPatient");
+    }
+
+    function saveMedicalInfo() {
+      let patient_id = document.getElementById('patientId').value;
+      let updatedMedical = {
+        weight: document.getElementById('editWeight').value,
+        height: document.getElementById('editHeight').value,
+        blood_group: document.getElementById('editBloodGroup').value,
+        medical_history: document.getElementById('editMedicalHistory').value,
+        current_health_conditions: document.getElementById('editCurrentHealthConditions').value,
+        treatment_details: document.getElementById('editTreatmentDetails').value,
+        fitness_goal: document.getElementById('editFitnessGoal').value,
+        allergies: document.getElementById('editAllergies').value,
+        smoking: document.getElementById('editSmoking').value,
+        drinking: document.getElementById('editDrinking').value,
+        sleep_pattern: document.getElementById('editSleepPattern').value
+      };
+      console.log("Submitting data:", updatedMedical);
+      saveData(`/patients/${patient_id}/info`, updatedMedical, "statusMedical");
+    }
+
+    function generateAnalysis() {
+      let patient_id = document.getElementById('patientId').value;
+      if (!patient_id) {
+        alert("No patient selected!");
+        return;
+      }
+
+      document.getElementById('loadingSpinner').style.display = 'block';
+
+      fetch(`http://127.0.0.1:5000/patients/${patient_id}/analyze_meals`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            alert("Error analyzing data: " + data.error);
+          } else {
+            document.getElementById('analysisResultsText').value = data.analysis;
+            document.getElementById('analysisTab').style.display = 'block'; // Show Analysis Tab
+
+            // Manually activate the tab
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            document.querySelector(`[data-content="analysisInfo"]`).classList.add('active');
+            document.getElementById('analysisInfo').classList.add('active');
+
+            fetchAnalyticsImages(patient_id);
+          }
+        })
+        .catch(error => console.error("Error:", error))
+        .finally(() => {
+          document.getElementById('loadingSpinner').style.display = 'none';
+        });
+    }
+    function fetchAnalyticsImages(patient_id) {
+      // Show the loading spinner while waiting for the API response
+      document.getElementById('loadingSpinner').style.display = 'block';
+
+      // Make GET request to fetch the images
+      fetch(`http://127.0.0.1:5000/patients/${patient_id}/analytics_images`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.graph_image_base64 && data.table_image_base64) {
+            // Create the image elements and set the src to the base64 encoded data
+            const graphImg = document.createElement('img');
+            graphImg.src = `data:image/png;base64,${data.graph_image_base64}`;
+            graphImg.alt = 'Graph Image';
+            graphImg.style.width = '100%';
+
+            const tableImg = document.createElement('img');
+            tableImg.src = `data:image/png;base64,${data.table_image_base64}`;
+            tableImg.alt = 'Table Image';
+            tableImg.style.width = '100%';
+
+            // Insert the images into the results container
+            const resultsContainer = document.getElementById('analysisResults');
+            resultsContainer.innerHTML = ''; // Clear previous images
+            resultsContainer.appendChild(graphImg);
+            resultsContainer.appendChild(tableImg);
+
+            // Show and activate the Analysis tab
+            document.getElementById('analysisTab').style.display = 'block';
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelector(`[data-content="analysisInfo"]`).classList.add('active');
+            document.getElementById('analysisInfo').classList.add('active');
+
+          } else {
+            alert("Error: Images not found.");
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert("Something went wrong. Please try again later.");
+        })
+        .finally(() => {
+          // Hide the loading spinner once the request is complete
+          document.getElementById('loadingSpinner').style.display = 'none';
+        });
+    }
+    function saveLifestyleInfo() {
+      let patient_id = document.getElementById('patientId').value;
+      let updatedLifestyle = {
+        day1_meal: document.getElementById('editDay1Lifestyle').value,
+        day2_meal: document.getElementById('editDay2Lifestyle').value,
+        day3_meal: document.getElementById('editDay3Lifestyle').value
+      };
+
+      saveData(`/patients/${patient_id}/getDiet`, updatedLifestyle, "statusRecall");
+    }
+
+    function savePrescription() {
+      let patient_id = document.getElementById('patientId').value;
+      let updatedPrescription = {
+        medical_prescription: document.getElementById('editMedicalPrescription').value,
+        diet_prescription: document.getElementById('editDietPrescription').value,
+        structured_diet_chart: document.getElementById('editStructuredDietChart').value,
+        exercise_prescription: document.getElementById('editExercisePrescription').value
+      };
+
+      saveData(`/patients/${patient_id}/info`, updatedPrescription, "statusPrescription");
+    }
+
+    function saveData(apiEndpoint, data, statusId) {
+      fetch(`http://127.0.0.1:5000${apiEndpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then(() => {
+          document.getElementById(statusId).style.display = "block";
+          setTimeout(() => { document.getElementById(statusId).style.display = "none"; }, 3000);
+        });
+    }
+
+    function generatePrescriptions() {
+      let patient_id = document.getElementById('patientId').value;
+
+      if (!patient_id) {
+        alert("No patient selected!");
+        return;
+      }
+
+      document.getElementById('loadingSpinner').style.display = 'block';
+
+      fetch(`http://127.0.0.1:5000/patients/${patient_id}/generate-diet`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            alert("Error generating diet plan: " + data.error);
+          } else {
+            document.getElementById('editDietPrescription').value = data.diet_prescription;
+          }
+
+          return fetch(`http://127.0.0.1:5000/patients/${patient_id}/generate-exercise`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+          });
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            alert("Error generating exercise plan: " + data.error);
+          } else {
+            document.getElementById('editExercisePrescription').value = data.exercise_prescription;
+          }
+        })
+        .catch(error => console.error("Error:", error))
+        .finally(() => {
+          document.getElementById('loadingSpinner').style.display = 'none';
+        });
+    }
+    function calculateAge(dob) {
+      let today = new Date();
+      let age = today.getFullYear() - dob.getFullYear();
+      let month = today.getMonth() - dob.getMonth();
+
+      if (month < 0 || (month === 0 && today.getDate() < dob.getDate())) {
+        age--;
+      }
+
+      return age;
+    }
+    function confirmLogout() {
+      if (confirm("Are you sure you want to logout?")) {
+        window.location.href = "/logout";
+      }
+    }
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+        tab.classList.add('active');
+        const contentId = tab.getAttribute('data-content');
+        document.getElementById(contentId).classList.add('active');
+      });
+    });
+
+    // Set default active tab
+    document.querySelector('.tab').classList.add('active');
+    document.querySelector('.tab-content').classList.add('active');
+
+    // Close search results when clicking elsewhere
+    document.addEventListener('click', (e) => {
+      if (!e.target.matches('.search-input') && !e.target.matches('#searchResults div')) {
+        document.getElementById('searchResults').innerHTML = '';
+      }
+    });
+
+    // Handle window resize for responsive navigation
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        document.getElementById('navLinks').classList.remove('active');
+        document.querySelector('nav').classList.remove('mobile-menu-active');
+      }
+    });
+  </script>
+</body>
+
+</html>

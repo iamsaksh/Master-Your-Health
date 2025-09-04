@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Choose Tracking Type</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f4f7fc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      color: #007BFF;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 30px;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>What would you like to track today?</h2>
+  <div class="button-group">
+    <button class="btn" id="diet-btn">Diet</button>
+    <button class="btn" id="exercise-btn">Exercise</button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const patientId = urlParams.get("patient_id");
+
+    document.getElementById("diet-btn").onclick = () => {
+      window.location.href = `/tracking_food?patient_id=${patientId}`;
+    };
+
+    document.getElementById("exercise-btn").onclick = () => {
+      window.location.href = `/tracking_exercise?patient_id=${patientId}`;
+    };
+  </script>
+
+</body>
+</html>

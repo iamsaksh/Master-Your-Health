@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medical Registration</title>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Roboto", sans-serif;
+      }
+
+      body {
+        background-color: #f5f9fc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        padding: 32px;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(25, 83, 139, 0.12);
+        width: 100%;
+        max-width: 500px;
+        max-height: 90vh;
+        overflow-y: auto;
+        border-left: 4px solid #19538b;
+      }
+
+      h2 {
+        color: #4f90d0;
+        margin-bottom: 24px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        font-size: 24px;
+      }
+
+      h3 {
+        color: #19538b;
+        margin-top: 24px;
+        font-weight: 500;
+      }
+
+      label {
+        font-weight: 500;
+        display: block;
+        margin: 16px 0 6px;
+        color: #19538b;
+        font-size: 14px;
+        letter-spacing: 0.3px;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccd9e6;
+        border-radius: 6px;
+        font-size: 15px;
+        outline: none;
+        transition: all 0.2s ease;
+        background-color: #fff;
+      }
+
+      input:focus {
+        border-color: #578dcb;
+        box-shadow: 0 0 0 3px rgba(79, 144, 208, 0.2);
+      }
+
+      input.invalid {
+        border: 1px solid #d9534f;
+        background-color: #fff;
+      }
+
+      .error {
+        color: #d9534f;
+        font-size: 13px;
+        margin-top: 5px;
+        font-weight: 400;
+      }
+
+      button {
+        width: 100%;
+        padding: 14px;
+        background: #4f90d0;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-top: 24px;
+        letter-spacing: 0.3px;
+      }
+
+      button:hover {
+        background: #19538b;
+        transform: translateY(-1px);
+      }
+
+      button:active {
+        transform: translateY(1px);
+      }
+
+      pre {
+        background: #f5f9fc;
+        padding: 16px;
+        border-radius: 6px;
+        overflow-x: auto;
+        text-align: left;
+        font-size: 14px;
+        margin-top: 20px;
+        color: #19538b;
+        font-family: monospace;
+      }
+
+      .form-group {
+        margin-bottom: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Patient Registration</h2>
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" required />
+          <div class="error" id="nameError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" required />
+          <div class="error" id="emailError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Contact Number</label>
+          <input type="text" id="phone" required />
+          <div class="error" id="phoneError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" required />
+          <div class="error" id="dobError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="location">Home Address</label>
+          <input type="text" id="location" required />
+          <div class="error" id="locationError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="occupation">Occupation</label>
+          <input type="text" id="occupation" required />
+          <div class="error" id="occupationError"></div>
+        </div>
+
+        <button type="submit">Submit Registration</button>
+      </form>
+
+      <h3>System Response</h3>
+      <pre id="response">Waiting for system response...</pre>
+    </div>
+
+    <script>
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const name = document.getElementById("name").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const phone = document.getElementById("phone").value.trim();
+          const dob = document.getElementById("dob").value;
+          const location = document.getElementById("location").value.trim();
+          const occupation = document.getElementById("occupation").value.trim();
+          const today = new Date().toISOString().split("T")[0];
+
+          let isValid = true;
+          document
+            .querySelectorAll(".error")
+            .forEach((error) => (error.textContent = ""));
+          document
+            .querySelectorAll("input")
+            .forEach((input) => input.classList.remove("invalid"));
+
+          if (!/^[A-Za-z\s]+$/.test(name)) {
+            document.getElementById("nameError").textContent =
+              "Invalid name: Use letters only.";
+            document.getElementById("name").classList.add("invalid");
+            isValid = false;
+          }
+
+          if (!/^\S+@\S+\.\S+$/.test(email)) {
+            document.getElementById("emailError").textContent =
+              "Invalid email format.";
+            document.getElementById("email").classList.add("invalid");
+            isValid = false;
+          }
+
+          if (!/^\d{10}$/.test(phone)) {
+            document.getElementById("phoneError").textContent =
+              "Phone number must be 10 digits.";
+            document.getElementById("phone").classList.add("invalid");
+            isValid = false;
+          }
+
+          if (dob > today) {
+            document.getElementById("dobError").textContent =
+              "Date of birth cannot be in the future.";
+            document.getElementById("dob").classList.add("invalid");
+            isValid = false;
+          }
+
+          if (!isValid) return;
+
+          const data = { name, email, phone, dob, location, occupation };
+          console.log("DEBUG - Sending Data:", JSON.stringify(data));
+
+          try {
+            const response = await fetch("http://127.0.0.1:5000/register", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            console.log("DEBUG - Response Received:", result);
+            if (result.patient_id) {
+              alert(
+                "Registration Successful! Redirecting to 3-Day Recall Form..."
+              );
+              window.location.href = `/3_day_recall?patient_id=${result.patient_id}`;
+            } else {
+              alert(result.error || "Registration failed!");
+            }
+            document.getElementById("response").textContent = JSON.stringify(
+              result,
+              null,
+              2
+            );
+            alert(result.message || "Registration successful!");
+          } catch (error) {
+            console.error("DEBUG - Fetch Error:", error);
+            document.getElementById("response").textContent = "Error: " + error;
+          }
+        });
+    </script>
+  </body>
+</html>

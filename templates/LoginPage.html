@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Master Your Health</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --line-color: #578dcb;
+      --title-color: #4f90d0;
+      --dark-color: #19538b;
+      --bg-color: #f8f9fa;
+      --text-color: #333;
+      --shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #f5f8fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-image: url("https://source.unsplash.com/1600x900/?medical,stethoscope");
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .login-container {
+      position: relative;
+      background: white;
+      padding: 40px 30px;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      width: 400px;
+      max-width: 90%;
+      border-top: 15px solid var(--dark-color);
+      border-bottom: 5px solid var(--line-color);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .login-container h2 {
+      color: var(--dark-color);
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--line-color);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 14px 15px;
+      margin: 15px 0;
+      border: 1px solid #e0e8f0;
+      border-radius: 6px;
+      font-size: 1rem;
+      background-color: #f9fbfd;
+      transition: all 0.3s ease;
+    }
+
+    .login-container input:focus {
+      border-color: var(--line-color);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(87, 141, 203, 0.2);
+    }
+
+    .login-container button {
+      background: var(--dark-color);
+      color: white;
+      border: none;
+      padding: 14px;
+      cursor: pointer;
+      width: 100%;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 15px;
+      transition: 0.3s;
+      box-shadow: 0 3px 10px rgba(25, 83, 139, 0.2);
+    }
+
+    .login-container button:hover {
+      background: var(--title-color);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(25, 83, 139, 0.3);
+    }
+
+    .forgot-password {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      text-align: center;
+      color: #6a7a8c;
+    }
+
+    .forgot-password a {
+      color: var(--dark-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .forgot-password a:hover {
+      color: var(--title-color);
+      text-decoration: underline;
+    }
+
+    #message {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 5px;
+      font-weight: 500;
+    }
+
+    #loginForm {
+      position: relative;
+      padding: 20px;
+      background-color: #f9fbfd;
+      border-radius: 6px;
+      border-left: 4px solid var(--line-color);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        width: 95%;
+        padding: 30px 20px;
+      }
+
+      #loginForm {
+        padding: 15px;
+      }
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: var(--dark-color);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-logo {
+      font-size: 1.5rem;
+      color: white;
+      font-weight: 600;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links li a:hover {
+      color: var(--title-color);
+    }
+
+    .login-container {
+      margin-top: 100px;
+      /* Add this line */
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="nav-logo">Master Your Health</div>
+    <ul class="nav-links">
+      <li><a href="home">Home</a></li>
+      <li><a href="about">About</a></li>
+      <li><a href="contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="login-container">
+    <h2>Login Page</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Sign In</button>
+    </form>
+    <p id="message"></p>
+    <p class="forgot-password"><a href="#">Forgot Password?</a></p>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      let username = document.getElementById("username").value.trim();
+      let password = document.getElementById("password").value.trim();
+      let messageElement = document.getElementById("message");
+      messageElement.innerText = "";
+
+      // Redirect for doctor
+      if (username === "Doctor1" && password === "Doctor123") {
+        messageElement.style.color = "green";
+        messageElement.innerText = "Doctor login successful! Redirecting...";
+        setTimeout(() => {
+          window.location.href = "/doctor_home";
+        }, 1000);
+        return;
+      }
+
+      // Redirect for assistant
+      if (username === "Assisstant1" && password === "Assisstant123") {
+        messageElement.style.color = "green";
+        messageElement.innerText = "Assistant login successful! Redirecting...";
+        setTimeout(() => {
+          window.location.href = "/assisstant_home";
+        }, 1000);
+        return;
+      }
+
+      // Patient login via backend API
+      try {
+        let response = await fetch("http://127.0.0.1:5000/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        });
+
+        let data = await response.json();
+
+        if (data.success) {
+          messageElement.style.color = "green";
+          messageElement.innerText = "Login successful! Redirecting...";
+
+          // Save patient ID
+          localStorage.clear();
+          localStorage.setItem("patient_id", data.patient_id);
+
+          setTimeout(() => {
+            window.location.href = "/patient_dashboard";
+          }, 1000);
+        } else {
+          messageElement.style.color = "red";
+          messageElement.innerText = data.error || "Invalid credentials";
+        }
+      } catch (error) {
+        messageElement.style.color = "red";
+        messageElement.innerText = "Server error. Please try again later.";
+        console.error("Login error:", error);
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us - Dr. Savita Jain</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --line-color: #578dcb;
+      --title-color: #4f90d0;
+      --dark-color: #19538b;
+      --light-color: #f4f8fd;
+      --paper-color: #fff;
+      --text-color: #333;
+      --shadow: 0px 5px 15px rgba(25, 83, 139, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Roboto", sans-serif;
+    }
+
+    body {
+      background: var(--light-color);
+      color: var(--text-color);
+      padding-top: 80px; /* space for fixed navbar */
+    }
+
+    /* Navbar */
+    nav {
+      background: var(--paper-color);
+      padding: 15px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 2px solid var(--line-color);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--dark-color);
+      font-family: "Merriweather", serif;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark-color);
+      font-weight: 500;
+      padding: 10px 15px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--title-color);
+    }
+
+    .btn-primary {
+      background: var(--dark-color);
+      color: white !important;
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .btn-primary:hover {
+      background: var(--title-color);
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 40px 20px 20px;
+      background: var(--paper-color);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      color: var(--dark-color);
+      font-family: "Merriweather", serif;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.2rem;
+    }
+
+    /* Sections */
+    section {
+      padding: 40px 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: var(--dark-color);
+      margin-bottom: 20px;
+      font-family: "Merriweather", serif;
+      position: relative;
+    }
+
+    h2::after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 3px;
+      background: var(--line-color);
+      margin-top: 10px;
+    }
+
+    /* How It Works */
+    .how-it-works ol {
+      padding-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    .how-it-works li {
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    /* Contact Form */
+    .contact-form form {
+      background: var(--paper-color);
+      padding: 30px;
+      border-radius: 5px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line-color);
+    }
+
+    .contact-form label {
+      display: block;
+      margin-top: 20px;
+      font-weight: 500;
+      color: var(--dark-color);
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      margin-top: 5px;
+    }
+
+    .contact-form button {
+      margin-top: 20px;
+      background: var(--dark-color);
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .contact-form button:hover {
+      background: var(--title-color);
+    }
+
+    /* Direct Contact */
+    .direct-contact p {
+      margin: 10px 0;
+      font-size: 1.1rem;
+    }
+
+    .direct-contact a {
+      color: var(--title-color);
+      text-decoration: none;
+    }
+
+    /* Map Embed */
+    .map iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+      border-radius: 5px;
+      box-shadow: var(--shadow);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--dark-color);
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      margin-top: 40px;
+    }
+
+    /* Responsive Nav (hide links below 768px) */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">Dr. Savita Jain</div>
+    <ul class="nav-links">
+      <li><a href="home">Home</a></li>
+      <li><a href="about">About</a></li>
+      <li><a href="services">Services</a></li>
+      <li><a href="contact">Contact</a></li>
+      <li><a href="login" class="btn-primary">Login</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page Header -->
+  <header>
+    <h1>Contact Us</h1>
+    <p>We’re here to answer your questions and guide you on your health journey.</p>
+  </header>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works">
+    <h2>How It Works</h2>
+    <ol>
+      <li><strong>Step 1:</strong> Fill out the contact form below with your query.</li>
+      <li><strong>Step 2:</strong> We will get back to you within 24–48 hours.</li>
+      <li><strong>Step 3:</strong> If required, we'll schedule an in-person or virtual consultation.</li>
+    </ol>
+    <p>For urgent medical issues, please contact your nearest emergency center or call the clinic directly.</p>
+  </section>
+
+  <!-- Contact Form Section -->
+  <section class="contact-form">
+    <h2>Send Us a Message</h2>
+    <form action="/submit-form" method="POST">
+      <label for="name">Your Name</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="email">Your Email</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+  </section>
+
+  <!-- Direct Contact Info -->
+  <section class="direct-contact">
+    <h2>Get In Touch</h2>
+    <p><strong>Phone:</strong> <a href="tel:+911234567890">+91 12345 67890</a></p>
+    <p><strong>Email:</strong> <a href="mailto:masteryourhealth@gmail.com">masteryourhealth@gmail.com</a></p>
+    <p><strong>Clinic Address:</strong> Aggar Nagar - B Block, Ludhiana, Punjab 141012</p>
+  </section>
+
+  <!-- Map Embed -->
+  <section class="map">
+    <h2>Find Us Here</h2>
+    <iframe 
+      src="https://maps.google.com/maps?q=30.888396,75.795785&z=17&output=embed"
+      allowfullscreen="" loading="lazy">
+    </iframe>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Dr. Savita Jain. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

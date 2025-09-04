@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meal Tracking | Master Your Health</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- FontAwesome for Icons -->
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      :root {
+        --primary-color: #19538b;
+        --secondary-color: #f8f9fa;
+        --text-color: #333;
+        --shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background: #f4f7fc;
+        color: var(--text-color);
+      }
+
+      /* Navbar */
+      nav {
+        background: white;
+        padding: 15px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: var(--shadow);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: var(--primary-color);
+      }
+
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+      }
+
+      .nav-links li {
+        display: inline-block;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: #578dcb;
+        font-weight: 500;
+        padding: 10px 20px;
+        border-radius: 25px;
+        transition: background 0.3s, color 0.3s;
+      }
+
+      .nav-links a:hover {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      /* Tracking Form */
+      .tracking-container {
+        max-width: 800px;
+        margin: 120px auto 50px;
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        text-align: center;
+      }
+
+      .tracking-container h2 {
+        font-size: 2.2rem;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+      }
+
+      .date-picker {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .date-picker label {
+        font-weight: bold;
+        margin-right: 10px;
+      }
+
+      .date-picker input {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+      }
+
+      .meal-entry {
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      .meal-entry label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .meal-entry textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+        resize: none;
+      }
+
+      .btn-submit {
+        background: #19538b;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        font-size: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 20px;
+      }
+
+      .btn-submit:hover {
+        background: #4f90d0;
+      }
+
+      /* Footer */
+      footer {
+        background: #222;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+      }
+
+      @media (max-width: 768px) {
+        .tracking-container {
+          padding: 30px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav>
+      <div class="logo">Meal Tracker</div>
+      <ul class="nav-links">
+        <li><a href="patient_dashboard">Home</a></li>
+        <li><a id="dashboard-link" href="#">Dashboard</a></li>
+        <li>
+          <a href="/login" class="logout-btn" onclick="confirmLogout()">Logout</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Tracking Form -->
+    <div class="tracking-container">
+      <h2>Track Your Meals</h2>
+      <p>Enter meals for a specific date for AI-based nutritional analysis.</p>
+
+      <!-- Date Selection -->
+      <div class="date-picker">
+        <label for="meal-date">Select Date:</label>
+        <input type="date" id="meal-date" />
+      </div>
+
+      <form id="trackingForm">
+        <div class="meal-entry">
+          <label for="breakfast">Breakfast</label>
+          <textarea
+            id="breakfast"
+            placeholder="E.g., Oatmeal, banana, coffee"
+          ></textarea>
+        </div>
+        <div class="meal-entry">
+          <label for="lunch">Lunch</label>
+          <textarea
+            id="lunch"
+            placeholder="E.g., Grilled chicken, rice, salad"
+          ></textarea>
+        </div>
+        <div class="meal-entry">
+          <label for="dinner">Dinner</label>
+          <textarea
+            id="dinner"
+            placeholder="E.g., Soup, bread, fruit"
+          ></textarea>
+        </div>
+        <div class="meal-entry">
+          <label for="snacks">Snacks</label>
+          <textarea
+            id="snacks"
+            placeholder="E.g., Nuts, yogurt, smoothie"
+          ></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Submit</button>
+      </form>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get patient_id from URL or localStorage
+        const urlParams = new URLSearchParams(window.location.search);
+        let patientId =
+          urlParams.get("patient_id") || localStorage.getItem("patient_id");
+
+        if (!patientId) {
+          alert("❌ Patient ID not found. Redirecting to login...");
+          window.location.href = "/login";
+          return;
+        }
+
+        // Store patient_id in localStorage if found in URL
+        localStorage.setItem("patient_id", patientId);
+
+        // Ensure dashboard link contains patient_id
+        document.getElementById(
+          "dashboard-link"
+        ).href = `/patient_dashboard?patient_id=${patientId}`;
+
+        document
+          .getElementById("trackingForm")
+          .addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            let mealDate = document.getElementById("meal-date").value.trim();
+
+            // Debugging: Check if the date is being captured correctly
+            console.log("🔍 Selected Date:", mealDate);
+
+            // Ensure the date is selected before submitting
+            if (!mealDate) {
+              alert("❌ Please select a valid date for meal tracking.");
+              return;
+            }
+
+            let mealData = {
+              patient_id: patientId,
+              meal_date: mealDate, // Send date as YYYY-MM-DD
+              breakfast: document.getElementById("breakfast").value.trim(),
+              lunch: document.getElementById("lunch").value.trim(),
+              dinner: document.getElementById("dinner").value.trim(),
+              snacks: document.getElementById("snacks").value.trim(),
+            };
+
+            console.log("📤 Sending Meal Data:", mealData); // Debugging log
+
+            try {
+              let response = await fetch(
+                `http://127.0.0.1:5000/patients/${patientId}/track_meals`,
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(mealData),
+                }
+              );
+
+              let data = await response.json();
+              console.log("✅ API Response:", data); // Debugging log
+
+              if (data.message) {
+                alert("✅ Meal data saved successfully!");
+              } else {
+                alert("❌ Error: " + (data.error || "Could not save data."));
+              }
+            } catch (error) {
+              alert("❌ Server error. Please try again later.");
+              console.error("❌ Tracking error:", error);
+            }
+          });
+      });
+
+      function confirmLogout() {
+        if (confirm("Are you sure you want to log out?")) {
+          logout();
+        }
+      }
+
+      function logout() {
+        localStorage.clear();
+        window.location.href = "/login";
+      }
+    </script>
+  </body>
+</html>

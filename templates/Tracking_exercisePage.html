@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exercise Tracker</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f7fc;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 80px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #28a745;
+    }
+
+    label {
+      font-weight: 600;
+    }
+
+    input, select {
+      padding: 10px;
+      width: 100%;
+      margin: 8px 0 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .exercise-row {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+
+    .exercise-row input {
+      width: calc(50% - 10px);
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    button {
+      background: #28a745;
+      color: white;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    .remove-btn {
+      background: #dc3545;
+    }
+
+    .remove-btn:hover {
+      background: #c82333;
+    }
+
+    .flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Track Your Exercise</h2>
+
+    <label for="exercise-date">Exercise Date:</label>
+    <input type="date" id="exercise-date" required />
+
+    <div id="exercise-list"></div>
+
+    <button onclick="addExerciseRow()">+ Add Exercise</button>
+    <br/>
+    <button onclick="submitExercises()">Submit</button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const patientId = urlParams.get("patient_id") || localStorage.getItem("patient_id");
+
+    if (!patientId) {
+      alert("❌ Patient ID missing. Redirecting...");
+      window.location.href = "/login";
+    }
+
+    localStorage.setItem("patient_id", patientId);
+
+    function addExerciseRow() {
+      const container = document.createElement("div");
+      container.className = "exercise-row";
+
+      container.innerHTML = `
+        <div class="flex">
+          <input type="text" placeholder="Exercise Name" class="exercise-name" required />
+          <input type="number" placeholder="Duration (min)" class="exercise-duration" required />
+          <button class="remove-btn" onclick="this.parentElement.parentElement.remove()">Remove</button>
+        </div>
+      `;
+
+      document.getElementById("exercise-list").appendChild(container);
+    }
+
+    function submitExercises() {
+      const date = document.getElementById("exercise-date").value;
+      if (!date) {
+        alert("❌ Please select a date.");
+        return;
+      }
+
+      const rows = document.querySelectorAll(".exercise-row");
+      const exercises = [];
+
+      rows.forEach(row => {
+        const name = row.querySelector(".exercise-name").value.trim();
+        const duration = parseInt(row.querySelector(".exercise-duration").value.trim());
+
+        if (name && duration) {
+          exercises.push({
+            exercise_name: name,
+            duration_minutes: duration,
+            exercise_date: date
+          });
+        }
+      });
+
+      if (exercises.length === 0) {
+        alert("❌ Please add at least one valid exercise.");
+        return;
+      }
+
+      fetch(`http://127.0.0.1:5000/patients/${patientId}/track_exercise`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ exercises })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message) {
+          alert("✅ Exercises saved successfully!");
+          location.reload(); // Optional: Refresh or navigate
+        } else {
+          alert("❌ Error: " + (data.error || "Something went wrong"));
+        }
+      })
+      .catch(err => {
+        console.error("❌ API error:", err);
+        alert("❌ Failed to connect to server.");
+      });
+    }
+
+    // Load one row by default
+    addExerciseRow();
+  </script>
+</body>
+</html>

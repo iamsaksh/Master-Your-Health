@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Blogs</title>
+    <style>
+      :root {
+        --line-color: #578dcb;
+        --title-color: #4f90d0;
+        --dark-color: #19538b;
+        --light-color: #f4f8fd;
+        --paper-color: #fff;
+        --text-color: #333;
+        --shadow: 0px 5px 15px rgba(25, 83, 139, 0.15);
+      }
+      body {
+        font-family: "Calibri", "Arial", sans-serif;
+        background-color: #f8fbff;
+        margin: 0;
+        padding: 0;
+        color: #19538b;
+      }
+      .container {
+        max-width: 800px;
+        margin: 30px auto;
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 12px rgba(25, 83, 139, 0.15);
+        border-top: 4px solid #4f90d0;
+        margin-top: 150px;
+      }
+      h1 {
+        text-align: center;
+        color: #4f90d0;
+        margin-bottom: 30px;
+        font-weight: 600;
+        border-bottom: 2px solid #578dcb;
+        padding-bottom: 10px;
+      }
+      .blog {
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #f8fbff;
+        border-left: 3px solid #578dcb;
+        border-radius: 4px;
+      }
+      .blog h3 {
+        margin: 0 0 10px 0;
+        color: #19538b;
+      }
+      .blog p {
+        margin-bottom: 15px;
+        color: #333;
+        line-height: 1.5;
+      }
+      .blog small {
+        color: #578dcb;
+        font-style: italic;
+        display: block;
+        margin-bottom: 10px;
+      }
+      .nav {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 10px;
+        background-color: #f8fbff;
+        border-radius: 6px;
+      }
+      .nav a {
+        margin: 0 10px;
+        text-decoration: none;
+        color: #4f90d0;
+        font-weight: bold;
+        padding: 8px 16px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+      }
+      .nav a:hover {
+        background-color: #4f90d0;
+        color: white;
+      }
+      button {
+        background: #4f90d0;
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 8px;
+        transition: all 0.2s ease;
+        font-weight: 500;
+      }
+      button:hover {
+        background: #19538b;
+      }
+      button:last-child {
+        background-color: #f8fbff;
+        color: #19538b;
+        border: 1px solid #578dcb;
+      }
+      button:last-child:hover {
+        background-color: #f0f5fb;
+      }
+
+      nav {
+        background: var(--paper-color);
+        padding: 15px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: var(--shadow);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 2px solid var(--line-color);
+      }
+      .logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: var(--dark-color);
+        font-family: "Merriweather", serif;
+      }
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--dark-color);
+        font-weight: 500;
+        padding: 10px 15px;
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: var(--title-color);
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="logo">Master Your Health</div>
+      <ul class="nav-links">
+        <li><a href="/doctor_home">Home</a></li>
+        <li><a href="/search_patient">Patients</a></li>
+        <li><a href="/doctor_blogs">Blogs</a></li>
+        <li><a href="/doctor_prescription">Prescriptions</a></li>
+        <li>
+        <a href="/login" class="logout-btn" onclick="confirmLogout()">Logout</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container">
+      <div class="nav">
+        <a href="/doctor_blogs/write_blogs">Write Blog</a>
+      </div>
+      <h1>Manage Blogs</h1>
+      <div id="blogs"></div>
+    </div>
+
+    <script>
+      async function fetchBlogs() {
+        const response = await fetch("http://127.0.0.1:5000/doctor_blogs");
+        const blogs = await response.json();
+        const blogsContainer = document.getElementById("blogs");
+        blogsContainer.innerHTML = "";
+
+        blogs.forEach((blog) => {
+          const blogDiv = document.createElement("div");
+          blogDiv.classList.add("blog");
+          blogDiv.innerHTML = `
+                    <h3>${blog.title}</h3>
+                    <p>${blog.content}</p>
+                    <small>📝 ${blog.date_written}</small>
+                    <button onclick="editBlog(${blog.id})">Edit</button>
+                    <button onclick="deleteBlog(${blog.id})">Delete</button>
+                `;
+          blogsContainer.appendChild(blogDiv);
+        });
+      }
+
+      async function deleteBlog(id) {
+        const response = await fetch(
+          `http://127.0.0.1:5000/doctor_blogs/${id}`,
+          {
+            method: "DELETE",
+          }
+        );
+
+        const result = await response.json();
+        alert(result.message || result.error);
+        fetchBlogs();
+      }
+
+      async function editBlog(id) {
+        const response = await fetch(
+          `http://127.0.0.1:5000/doctor_blogs/${id}`
+        );
+        const blog = await response.json();
+
+        // Redirect to a new page or show an edit form
+        const newTitle = prompt("Edit Blog Title", blog.title);
+        const newContent = prompt("Edit Blog Content", blog.content);
+
+        if (newTitle && newContent) {
+          const updatedBlog = {
+            title: newTitle,
+            content: newContent,
+            date_written: blog.date_written,
+          };
+
+          const updateResponse = await fetch(
+            `http://127.0.0.1:5000/doctor_blogs/${id}`,
+            {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(updatedBlog),
+            }
+          );
+
+          const result = await updateResponse.json();
+          alert(result.message || result.error);
+          fetchBlogs();
+        }
+      }
+
+      window.onload = fetchBlogs;
+    </script>
+  </body>
+</html>

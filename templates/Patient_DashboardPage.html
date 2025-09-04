@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Master Your Health</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- FontAwesome for Icons -->
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      :root {
+        --line-color: #578dcb;
+        --title-color: #4f90d0;
+        --dark-color: #19538b;
+        --text-color: #333;
+        --shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        --paper-color: #fff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background: #f7f9fc;
+        color: var(--text-color);
+      }
+
+      /* Navbar */
+      nav {
+        background: var(--paper-color);
+        padding: 15px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: var(--shadow);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 2px solid var(--line-color);
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: var(--dark-color);
+      }
+
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+      }
+
+      .nav-links li {
+        display: inline-block;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--dark-color);
+        font-weight: 500;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background 0.3s, color 0.3s;
+      }
+
+      /* Hover Effect for Normal Links */
+      .nav-links a:not(.logout-btn):hover {
+        background: var(--title-color);
+        color: white;
+      }
+
+      /* Red Hover Effect for Logout */
+      .logout-btn {
+        color: #b33a3a;
+      }
+
+      .logout-btn:hover {
+        background: #dc3545 !important;
+        color: white !important;
+      }
+
+      /* Dashboard Container */
+      .dashboard-container {
+        max-width: 900px;
+        margin: 120px auto 50px;
+        background: var(--paper-color);
+        padding: 40px;
+        border-radius: 5px;
+        box-shadow: var(--shadow);
+        position: relative;
+        border: 1px solid var(--line-color);
+      }
+
+      .dashboard-container:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 30px;
+        right: 30px;
+        height: 2px;
+        background-color: var(--line-color);
+      }
+
+      .dashboard-container h2 {
+        font-size: 2.2rem;
+        color: var(--title-color);
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: 600;
+        padding-bottom: 15px;
+        position: relative;
+      }
+
+      .dashboard-container h2:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 25%;
+        right: 25%;
+        height: 1px;
+        background-color: var(--line-color);
+      }
+
+      /* Footer */
+      footer {
+        background: var(--dark-color);
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+      }
+
+      @media (max-width: 768px) {
+        .dashboard-container {
+          padding: 30px 20px;
+          margin: 100px 15px 30px;
+        }
+
+        nav {
+          padding: 15px 20px;
+        }
+
+        .logo {
+          font-size: 1.5rem;
+        }
+
+        .nav-links {
+          gap: 10px;
+        }
+
+        .nav-links a {
+          padding: 8px 12px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav>
+      <div class="logo">Patient Dashboard</div>
+      <ul class="nav-links">
+        <li><a href="patient_dashboard">Home</a></li>
+        <li><a id="tracking-link" href="">Tracking</a></li>
+        <li>
+          <a href="#" class="logout-btn" onclick="confirmLogout()">Logout</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+      <h2 id="welcome-message">Welcome!</h2>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const patientId = localStorage.getItem("patient_id");
+
+          if (!patientId) {
+              alert("❌ Patient ID not found. Redirecting to login...");
+              window.location.href = "/login";
+              return;
+          }
+
+          document.getElementById("tracking-link").href = `/tracking_options?patient_id=${patientId}`;
+
+          fetchUserDetails();
+      });
+
+      async function fetchUserDetails() {
+          const patientId = localStorage.getItem("patient_id");
+
+          try {
+              let response = await fetch(`http://127.0.0.1:5000/patients/${patientId}`);
+              let data = await response.json();
+
+              if (data.error) {
+                  document.getElementById("welcome-message").innerText = "User not found!";
+              } else {
+                  document.getElementById("welcome-message").innerText = `Welcome, ${data.name}!`;
+              }
+          } catch (error) {
+              document.getElementById("welcome-message").innerText = "Error loading user details!";
+          }
+      }
+
+      function confirmLogout() {
+          const confirmation = confirm("Are you sure you want to log out?");
+          if (confirmation) {
+              logout();
+          }
+      }
+
+      function logout() {
+          localStorage.clear();
+          window.location.href = "/login";
+      }
+  </script>
+  </body>
+</html>

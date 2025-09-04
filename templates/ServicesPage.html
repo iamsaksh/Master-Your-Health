@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Master Your Health Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --line-color: #578dcb;
+            --title-color: #4f90d0;
+            --dark-color: #19538b;
+            --light-color: #f4f8fd;
+            --paper-color: #fff;
+            --text-color: #333;
+            --shadow: 0px 5px 15px rgba(25, 83, 139, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Roboto", sans-serif;
+        }
+
+        body {
+            background: var(--light-color);
+            color: var(--text-color);
+            padding-top: 80px;
+            /* space for fixed navbar */
+        }
+
+        /* Navbar */
+        nav {
+            background: var(--paper-color);
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--line-color);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--dark-color);
+            font-family: "Merriweather", serif;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            padding: 10px 15px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--title-color);
+        }
+
+        .btn-primary {
+            background: var(--dark-color);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 5px;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: var(--title-color);
+        }
+
+        /* Mobile Menu */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.8rem;
+            color: var(--dark-color);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                right: -100%;
+                background: var(--paper-color);
+                flex-direction: column;
+                width: 80%;
+                height: calc(100vh - 80px);
+                padding: 20px;
+                transition: 0.3s;
+                box-shadow: var(--shadow);
+                gap: 10px;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links a {
+                font-size: 1.2rem;
+            }
+        }
+
+
+
+        /* Main Heading */
+        .main-heading {
+            text-align: center;
+            padding: 40px 20px 20px;
+            font-size: 28px;
+            color: #2c3e50;
+        }
+
+        .main-heading span {
+            display: block;
+            font-size: 18px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        /* Card Grid */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .card h2 i {
+            color: #4a90e2;
+            margin-right: 10px;
+        }
+
+        .card p {
+            color: #555;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav ul {
+                margin-top: 10px;
+                flex-wrap: wrap;
+            }
+
+            .card h2 {
+                font-size: 18px;
+            }
+
+            .card p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">Master Your Health</div>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="home">Home</a></li>
+            <li><a href="about">About</a></li>
+            <li><a href="services">Services</a></li>
+            <li><a href="contact">Contact</a></li>
+            <li>
+                <a href="login" class="btn-primary" style="color: white;">Login</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Heading -->
+    <div class="main-heading">
+        Our Services</span>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="container">
+        <div class="card">
+            <h2><i class="fas fa-notes-medical"></i> Full-Body Checkups & Diagnostics</h2>
+            <p>We provide extensive full-body checkups and diagnostics to detect early signs of health issues. With
+                AI-assisted analysis, we ensure detailed insights into your health status, enabling proactive medical
+                intervention and improved outcomes.</p>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-apple-alt"></i> Nutrition & Diet Plans</h2>
+            <p>Our expert team crafts AI-personalized meal plans tailored to your body type, health goals, and dietary
+                restrictions. Whether you're managing chronic conditions or optimizing your wellness, our plans help
+                maintain a balanced lifestyle.</p>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-dumbbell"></i> Fitness & Wellness Programs</h2>
+            <p>Achieve your wellness goals through custom fitness regimens created using AI insights and your health
+                data. From guided workouts to lifestyle coaching, our holistic programs support your journey toward a
+                healthier, more active life.</p>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-microchip"></i> AI-Driven Health Package Generation</h2>
+            <p>Leveraging the latest advancements in Artificial Intelligence, we provide personalized health packages
+                designed to address your unique health conditions. Our AI algorithms analyze your health data, medical
+                history, lifestyle, and genetic predispositions to generate the most effective and cost-efficient health
+                packages for you.</p>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-pills"></i> Customized Treatment Plans</h2>
+            <p>Our personalized treatment plans use AI to track patient progress and make data-driven adjustments to
+                ensure optimal results. Whether it’s diabetes management, weight loss, or cardiovascular health, our
+                AI-powered approach provides tailored recommendations that adapt over time.</p>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-heartbeat"></i> Continuous Monitoring & Support</h2>
+            <p>We utilize AI to provide continuous health monitoring, ensuring that you’re always on track with your
+                treatment. Through real-time data analysis, we can adjust your care plan proactively, helping you
+                achieve and maintain long-term health goals.</p>
+        </div>
+    </div>
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+
+
+</body>
+
+</html>

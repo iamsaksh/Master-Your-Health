@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3-Day Recall Method</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+      }
+
+      h2 {
+        text-align: center;
+        color: #4f90d0;
+        font-weight: 700;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #578dcb;
+      }
+
+      form {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0px 3px 10px rgba(25, 83, 139, 0.1);
+        max-width: 800px;
+        margin: auto;
+        border-top: 8px solid #19538b;
+      }
+
+      .day-section {
+        margin-bottom: 25px;
+        padding: 15px;
+        border: 1px solid #578dcb;
+        border-radius: 6px;
+        background: #fcfcfc;
+        position: relative;
+      }
+
+      .day-section h3 {
+        color: #19538b;
+        margin-top: 0;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #578dcb;
+      }
+
+      label {
+        font-weight: 500;
+        display: block;
+        margin-top: 12px;
+        color: #19538b;
+      }
+
+      textarea {
+        width: 100%;
+        height: 50px;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #d1dff0;
+        border-radius: 4px;
+        font-size: 14px;
+        resize: none;
+        background-color: #f8fafc;
+      }
+
+      textarea:focus {
+        outline: none;
+        border-color: #578dcb;
+        box-shadow: 0 0 0 2px rgba(87, 141, 203, 0.2);
+      }
+
+      button {
+        background: #19538b;
+        color: white;
+        padding: 12px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+        border-radius: 5px;
+        font-weight: 500;
+        transition: 0.3s ease;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background: #4f90d0;
+      }
+
+      /* Prescription-like details */
+      .rx-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .rx-symbol {
+        font-size: 24px;
+        color: #19538b;
+        font-weight: bold;
+      }
+
+      .rx-date {
+        color: #578dcb;
+        font-style: italic;
+      }
+
+      /* Footer styling */
+      .rx-footer {
+        margin-top: 25px;
+        border-top: 1px solid #578dcb;
+        padding-top: 15px;
+        font-size: 12px;
+        color: #19538b;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <form id="recallForm">
+      <div class="rx-header">
+        <div class="rx-symbol"></div>
+        <div class="rx-date" id="currentDate">Date:</div>
+      </div>
+
+      <h2>3-Day Food Recall Assessment</h2>
+
+      <!-- Day 1 -->
+      <div class="day-section">
+        <h3>Day 1</h3>
+        <label>Breakfast:</label>
+        <textarea id="day1_breakfast"></textarea>
+
+        <label>Morning Snack:</label>
+        <textarea id="day1_morning_snack"></textarea>
+
+        <label>Lunch:</label>
+        <textarea id="day1_lunch"></textarea>
+
+        <label>Afternoon Snack:</label>
+        <textarea id="day1_afternoon_snack"></textarea>
+
+        <label>Dinner:</label>
+        <textarea id="day1_dinner"></textarea>
+
+        <label>Evening Snack:</label>
+        <textarea id="day1_evening_snack"></textarea>
+      </div>
+
+      <!-- Day 2 -->
+      <div class="day-section">
+        <h3>Day 2</h3>
+        <label>Breakfast:</label>
+        <textarea id="day2_breakfast"></textarea>
+
+        <label>Morning Snack:</label>
+        <textarea id="day2_morning_snack"></textarea>
+
+        <label>Lunch:</label>
+        <textarea id="day2_lunch"></textarea>
+
+        <label>Afternoon Snack:</label>
+        <textarea id="day2_afternoon_snack"></textarea>
+
+        <label>Dinner:</label>
+        <textarea id="day2_dinner"></textarea>
+
+        <label>Evening Snack:</label>
+        <textarea id="day2_evening_snack"></textarea>
+      </div>
+
+      <!-- Day 3 -->
+      <div class="day-section">
+        <h3>Day 3</h3>
+        <label>Breakfast:</label>
+        <textarea id="day3_breakfast"></textarea>
+
+        <label>Morning Snack:</label>
+        <textarea id="day3_morning_snack"></textarea>
+
+        <label>Lunch:</label>
+        <textarea id="day3_lunch"></textarea>
+
+        <label>Afternoon Snack:</label>
+        <textarea id="day3_afternoon_snack"></textarea>
+
+        <label>Dinner:</label>
+        <textarea id="day3_dinner"></textarea>
+
+        <label>Evening Snack:</label>
+        <textarea id="day3_evening_snack"></textarea>
+      </div>
+
+      <button type="button" onclick="submitRecallData()">
+        Submit Recall Data
+      </button>
+
+      <div class="rx-footer">
+        Please record all food and beverages consumed accurately. This
+        information will be used for nutritional assessment purposes only.
+      </div>
+    </form>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Set current date
+        const today = new Date();
+        document.getElementById("currentDate").innerHTML +=
+          today.toLocaleDateString();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const patientId = urlParams.get("patient_id");
+
+        if (!patientId) {
+          alert("Patient ID missing! Redirecting to registration page...");
+          window.location.href = "register.html";
+        }
+      });
+
+      function submitRecallData() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const patientId = urlParams.get("patient_id");
+
+        if (!patientId) {
+          alert("Patient ID is missing!");
+          return;
+        }
+
+        const data = {
+          day1_breakfast: document.getElementById("day1_breakfast").value,
+          day1_morning_snack:
+            document.getElementById("day1_morning_snack").value,
+          day1_lunch: document.getElementById("day1_lunch").value,
+          day1_afternoon_snack: document.getElementById("day1_afternoon_snack")
+            .value,
+          day1_dinner: document.getElementById("day1_dinner").value,
+          day1_evening_snack:
+            document.getElementById("day1_evening_snack").value,
+
+          day2_breakfast: document.getElementById("day2_breakfast").value,
+          day2_morning_snack:
+            document.getElementById("day2_morning_snack").value,
+          day2_lunch: document.getElementById("day2_lunch").value,
+          day2_afternoon_snack: document.getElementById("day2_afternoon_snack")
+            .value,
+          day2_dinner: document.getElementById("day2_dinner").value,
+          day2_evening_snack:
+            document.getElementById("day2_evening_snack").value,
+
+          day3_breakfast: document.getElementById("day3_breakfast").value,
+          day3_morning_snack:
+            document.getElementById("day3_morning_snack").value,
+          day3_lunch: document.getElementById("day3_lunch").value,
+          day3_afternoon_snack: document.getElementById("day3_afternoon_snack")
+            .value,
+          day3_dinner: document.getElementById("day3_dinner").value,
+          day3_evening_snack:
+            document.getElementById("day3_evening_snack").value,
+        };
+
+        fetch(`http://127.0.0.1:5000/patients/${patientId}/recall`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.message) {
+              alert("3-Day Recall Data Submitted! Going to IPAQ page.");
+              window.location.href = `/ipaq?patient_id=${patientId}`;
+            } else {
+              alert("Error: " + data.error);
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+    </script>
+  </body>
+</html>

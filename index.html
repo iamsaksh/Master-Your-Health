@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Master Your Health - Premium Healthcare</title>
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Merriweather:wght@400;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+  <style>
+    :root {
+      --line-color: #578dcb;
+      --title-color: #4f90d0;
+      --dark-color: #19538b;
+      --light-color: #f4f8fd;
+      --paper-color: #fff;
+      --text-color: #333;
+      --shadow: 0px 5px 15px rgba(25, 83, 139, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Roboto", sans-serif;
+    }
+
+    body {
+      background: var(--light-color);
+      color: var(--text-color);
+    }
+
+    /* Navbar */
+    nav {
+      background: var(--paper-color);
+      padding: 15px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 2px solid var(--line-color);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--dark-color);
+      font-family: "Merriweather", serif;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark-color);
+      font-weight: 500;
+      padding: 10px 15px;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--title-color);
+    }
+
+    .btn-primary {
+      background: var(--dark-color);
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      font-weight: 500;
+      border-radius: 5px;
+      transition: 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: var(--title-color);
+    }
+
+    /* Mobile Menu */
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      font-size: 1.8rem;
+      color: var(--dark-color);
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 85vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      background-image: url("/api/placeholder/1200/800");
+      background-size: cover;
+      background-position: center;
+      transition: background-image 1s ease-in-out, opacity 1s;
+      opacity: 1;
+      margin-top: 80px;
+    }
+
+    /* .hero.fade-out {
+        opacity: 0;
+      } */
+
+    .hero-overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(25, 83, 139, 0.3);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 5px;
+      border: 1px solid var(--dark-color);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      font-family: "Merriweather", serif;
+      color: white;
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 25px;
+    }
+
+    .hero .btn-primary {
+      padding: 15px 35px;
+      font-size: 1.2rem;
+      background: white;
+      color: var(--dark-color);
+    }
+
+    .hero .btn-primary:hover {
+      background: var(--light-color);
+    }
+
+    /* Services Section */
+    .services {
+      padding: 80px 20px;
+      text-align: center;
+      background: var(--paper-color);
+      border-top: 2px solid var(--line-color);
+      border-bottom: 2px solid var(--line-color);
+    }
+
+    .services h2 {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      color: var(--dark-color);
+      font-family: "Merriweather", serif;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 10px;
+    }
+
+    .services h2:after {
+      content: "";
+      position: absolute;
+      width: 80px;
+      height: 3px;
+      background: var(--line-color);
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .service-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .service-box {
+      background: var(--light-color);
+      padding: 30px;
+      border-radius: 5px;
+      box-shadow: var(--shadow);
+      transition: 0.3s;
+      text-align: center;
+      border-left: 4px solid var(--title-color);
+    }
+
+    .service-box i {
+      font-size: 50px;
+      color: var(--title-color);
+      margin-bottom: 20px;
+    }
+
+    .service-box h3 {
+      font-size: 1.7rem;
+      margin-bottom: 10px;
+      color: var(--dark-color);
+      font-family: "Merriweather", serif;
+    }
+
+    .service-box:hover {
+      transform: translateY(-5px);
+      border-left: 4px solid var(--dark-color);
+    }
+
+    /* Blogs Section */
+    .blogs {
+      padding: 80px 20px;
+      background: var(--light-color);
+    }
+
+    .blogs h2 {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      color: var(--dark-color);
+      font-family: "Merriweather", serif;
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 10px;
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .blogs h2:after {
+      content: "";
+      position: absolute;
+      width: 80px;
+      height: 3px;
+      background: var(--line-color);
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .blog-container {
+      max-width: 900px;
+      margin: auto;
+      background: var(--paper-color);
+      padding: 30px;
+      border-radius: 5px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line-color);
+    }
+
+    .blog-box {
+      display: flex;
+      align-items: flex-start;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      transition: all 0.3s ease-in-out;
+      border-bottom: 1px dashed var(--line-color);
+    }
+
+    .blog-box:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .blog-content {
+      flex: 1;
+    }
+
+    .blog-box h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: var(--title-color);
+      font-family: "Merriweather", serif;
+    }
+
+    .blog-box p {
+      font-size: 1rem;
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    .blog-box small {
+      display: block;
+      margin-top: 10px;
+      color: var(--line-color);
+      font-style: italic;
+    }
+
+    .read-more-btn {
+      background: var(--title-color);
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    .read-more-btn:hover {
+      background: var(--dark-color);
+    }
+
+    /* Contact Section */
+    .contact {
+      background: var(--dark-color);
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+      border-top: 2px solid var(--line-color);
+    }
+
+    .contact h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      font-family: "Merriweather", serif;
+    }
+
+    .contact p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .contact form {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .contact input[type="email"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--dark-color);
+      color: white;
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid var(--line-color);
+    }
+
+    .expanded {
+      height: auto;
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .blog-box {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .service-container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+
+      nav {
+        padding: 15px 20px;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 80px;
+        right: -100%;
+        background: var(--paper-color);
+        flex-direction: column;
+        width: 80%;
+        height: calc(100vh - 80px);
+        padding: 20px;
+        transition: 0.3s;
+        box-shadow: var(--shadow);
+        gap: 10px;
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .service-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-content {
+        padding: 20px;
+        width: 90%;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .blog-box {
+        flex-direction: column;
+      }
+
+      .blog-box h3 {
+        font-size: 1.3rem;
+      }
+
+      .services h2,
+      .blogs h2 {
+        font-size: 2rem;
+      }
+
+      .service-box h3 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">Master Your Health</div>
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="home">Home</a></li>
+      <li><a href="about">About</a></li>
+      <li><a href="services">Services</a></li>
+      <li><a href="contact">Contact</a></li>
+      <li>
+        <a href="login" class="btn-primary" style="color: white">Login</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 style="color: white">Empowering Your Health</h1>
+      <p>Expert medical care, personalized for you.</p>
+      <a href="#services" class="btn-primary">Get Started</a>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services" id="services">
+    <h2>Our Services</h2>
+    <div class="service-container">
+      <div class="service-box">
+        <i class="fas fa-stethoscope"></i>
+        <h3>Comprehensive Checkups</h3>
+        <p>Full-body checkups & diagnostics.</p>
+      </div>
+      <div class="service-box">
+        <i class="fas fa-utensils"></i>
+        <h3>Nutrition & Diet Plans</h3>
+        <p>Personalized meal plans for optimal health.</p>
+      </div>
+      <div class="service-box">
+        <i class="fas fa-dumbbell"></i>
+        <h3>Fitness & Wellness</h3>
+        <p>Stay active with expert guidance.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="blogs">
+    <h2>Blogs by the Doctor</h2>
+    <div class="blog-container" id="blog-container">
+      <!-- Blogs will be inserted here dynamically -->
+    </div>
+  </section>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Mobile menu toggle
+      const hamburger = document.getElementById("hamburger");
+      const navLinks = document.getElementById("nav-links");
+
+      if (hamburger) {
+        hamburger.addEventListener("click", function () {
+          navLinks.classList.toggle("active");
+        });
+      }
+
+      // Close menu when clicking on a link
+      const navItems = document.querySelectorAll(".nav-links a");
+      navItems.forEach((item) => {
+        item.addEventListener("click", function () {
+          navLinks.classList.remove("active");
+        });
+      });
+
+      // Hero Section Background Rotation
+      const heroImages = [
+        "static/images/slide1.jpg",
+        "static/images/slide2.jpg",
+        "static/images/slide3.jpg",
+      ];
+
+      const heroSection = document.querySelector(".hero");
+      let heroIndex = 1;
+
+      // Set initial background
+      heroSection.style.backgroundImage = `url(${heroImages[0]})`;
+
+      function changeHeroBackground() {
+        heroSection.classList.add("fade-out");
+
+        setTimeout(() => {
+          heroSection.style.backgroundImage = `url(${heroImages[heroIndex]})`;
+          heroSection.classList.remove("fade-out");
+          heroIndex = (heroIndex + 1) % heroImages.length;
+        }, 1000);
+      }
+
+      // Start rotation after initial load
+      setInterval(changeHeroBackground, 3000);
+
+      // Load blogs from server
+      fetch("http://127.0.0.1:5000/doctor_blogs")
+        .then((response) => response.json())
+        .then((data) => {
+          const blogContainer = document.getElementById("blog-container");
+          blogContainer.innerHTML = "";
+
+          if (data.length === 0) {
+            blogContainer.innerHTML = "<p>No blogs available.</p>";
+            return;
+          }
+
+          const blogsToShow = data.slice(0, 10);
+
+          blogsToShow.forEach((blog) => {
+            const blogBox = document.createElement("div");
+            blogBox.classList.add("blog-box");
+
+            const blogImage = blog.image_url
+              ? `<img src="${blog.image_url}" alt="Blog Image">`
+              : "";
+
+            const isLong = blog.content.length > 200;
+            const shortContent = blog.content.substring(0, 200) + "...";
+
+            blogBox.innerHTML = `
+                ${blogImage}
+                <div class="blog-content">
+                  <h3>${blog.title}</h3>
+                  <p id="blog-content-${blog.id}" data-short="${shortContent}" data-full="${blog.content}">
+                    ${shortContent}
+                  </p>
+                  ${isLong
+                ? `<button class="read-more-btn" onclick="toggleReadMore(${blog.id})">Read More</button>`
+                : ""
+              }
+                  <small>Written on: ${blog.date_written}</small>
+                </div>
+              `;
+
+            blogContainer.appendChild(blogBox);
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching blogs:", error);
+          document.getElementById("blog-container").innerHTML =
+            "<p>Failed to load blogs.</p>";
+        });
+    });
+
+    function toggleReadMore(blogId) {
+      // 1) Grab the <p> and the button
+      const contentEl = document.getElementById(`blog-content-${blogId}`);
+      const btn = contentEl.parentElement.querySelector('button.read-more-btn');
+
+      // 2) See if we're expanding or collapsing
+      const expanding = !contentEl.classList.contains('expanded');
+
+      // 3) Toggle the class, swap in the full or short HTML, and update the button
+      contentEl.classList.toggle('expanded', expanding);
+      contentEl.innerHTML = expanding
+        ? contentEl.getAttribute('data-full')
+        : contentEl.getAttribute('data-short');
+      btn.textContent = expanding ? 'Read Less' : 'Read More';
+    }
+
+
+  </script>
+  <!-- Footer -->
+  <footer>&copy; 2025 Master Your Health. All Rights Reserved.</footer>
+</body>
+
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Our Clinic</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --line-color: #578dcb;
+      --title-color: #4f90d0;
+      --dark-color: #19538b;
+      --light-color: #f4f8fd;
+      --paper-color: #fff;
+      --text-color: #333;
+      --shadow: 0px 5px 15px rgba(25, 83, 139, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Times New Roman", serif;
+    }
+
+    body {
+      background: #f9f9f9;
+      overflow-x: hidden;
+      color: #19538b;
+    }
+
+    /* Navbar */
+    nav {
+      background: var(--paper-color);
+      padding: 15px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 2px solid var(--line-color);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--dark-color);
+      font-family: "Merriweather", serif;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark-color);
+      font-weight: 500;
+      padding: 10px 15px;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--title-color);
+    }
+
+    .btn-primary {
+      background: var(--dark-color);
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      font-weight: 500;
+      border-radius: 5px;
+      transition: 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: var(--title-color);
+    }
+
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      font-size: 1.8rem;
+      color: var(--dark-color);
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: url("https://source.unsplash.com/1600x900/?hospital,healthcare") no-repeat center center/cover;
+      position: relative;
+      border-bottom: 2px solid #578dcb;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      animation: fadeIn 2s ease-in-out;
+      border: 2px solid #578dcb;
+      padding: 40px;
+      background: #fff;
+      width: 80%;
+      max-width: 800px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      letter-spacing: 2px;
+      color: #4f90d0;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #578dcb;
+      padding-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.5rem;
+      margin-top: 10px;
+      color: #19538b;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 50px auto;
+      padding: 20px;
+      text-align: left;
+      background: #fff;
+      border: 1px solid #578dcb;
+      box-shadow: 0px 5px 15px rgba(25, 83, 139, 0.1);
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-left: 4px solid #578dcb;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .card h2 {
+      color: #4f90d0;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #578dcb;
+    }
+
+    .card p,
+    .card ul {
+      font-size: 1.1rem;
+      color: #19538b;
+      line-height: 1.6;
+    }
+
+    .card ul {
+      margin-top: 10px;
+      padding-left: 20px;
+    }
+
+    .card:hover {
+      transform: translateX(5px);
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+
+    .visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Expert card container */
+    .expert-card__inner {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* Portrait styling */
+    .expert-card__photo {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--line-color);
+      flex-shrink: 0;
+    }
+
+    /* Details will fill the remaining space */
+    .expert-card__details {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    /* On small screens, stack vertically */
+    @media (max-width: 600px) {
+      .expert-card__inner {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .expert-card__photo {
+        margin: 0 auto 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="logo">Master Your Health</div>
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="home">Home</a></li>
+      <li><a href="about">About</a></li>
+      <li><a href="services">Services</a></li>
+      <li><a href="contact">Contact</a></li>
+      <li>
+        <a href="login" class="btn-primary" style="color: white;">Login</a>
+      </li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to Dr. Savita Jain's Clinic</h1>
+      <p>Master Your Health</p>
+    </div>
+  </section>
+
+  <div class="card fade-in expert-card">
+    <h2>Meet Our Expert</h2>
+
+    <div class="expert-card__inner">
+      <!-- 1a) Doctor’s photo -->
+      <img src="static/images/Doctor_Profile.jpg" alt="Dr. Savita Jain" class="expert-card__photo" />
+
+      <!-- 1b) Her details -->
+      <div class="expert-card__details">
+        <p><strong>Dr. Savita Jain</strong></p>
+        <p><strong>Designation:</strong> Consultant, Dept. of Endocrinology</p>
+        <p><strong>Qualifications:</strong> MBBS &amp; MD (Medicine) from DMC & H, Ludhiana; DNB (Endocrinology) from
+          Indraprastha Apollo, New Delhi</p>
+        <p><strong>Professional Memberships:</strong> Endocrine Society of India, Indian Medical Association, Association of Physicians of India, Indian Rheumatology Association, RSSDI</p>
+        <p><strong>Area of Expertise:</strong> Type 1 &amp; Type 2 Diabetes, Gestational Diabetes, Lipid Disorders, Thyroid Diseases, Adrenal Diseases, Osteoporosis, Hypertension, Endocrine Cancers, etc.</p>
+        <p><strong>Chapters:</strong> PCOS, hypothyroidism & cardiovascular disease </p>
+        <p>
+          <strong>Social Media:</strong>
+          <a href="https://www.facebook.com/drsavitajainendocrinologists" target="_blank">
+            <i class="fab fa-facebook-f"></i> Facebook
+          </a> |
+          <a href="https://www.instagram.com/dr.savitajain/" target="_blank">
+            <i class="fab fa-instagram"></i> Instagram
+          </a> |
+          <a href="https://in.linkedin.com/in/drsavitajain" target="_blank">
+            <i class="fab fa-linkedin-in"></i> LinkedIn
+          </a> |
+          <a href="https://www.youtube.com/@masteryourhealth6156" target="_blank">
+            <i class="fab fa-youtube"></i> YouTube
+          </a>
+        </p>        
+        <p><strong>Contact:</strong> 8826231500</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card fade-in">
+      <h2>About Us</h2>
+      <p>
+        At our clinic, we are committed to providing expert and compassionate
+        care in the field of endocrinology. Led by Dr. Savita Jain, a highly
+        qualified and experienced consultant, our focus is on delivering
+        personalized treatment for a wide range of hormonal and metabolic
+        disorders. From diabetes management to thyroid care, we combine the
+        latest research with empathetic patient support.
+      </p>
+    </div>
+
+    <div class="card fade-in">
+      <h2>Our Mission</h2>
+      <p>
+        To empower our patients through education, evidence-based treatment,
+        and ongoing support so they can achieve long‑term metabolic health
+        and hormonal balance.
+      </p>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const hamburger = document.getElementById("hamburger");
+        const navLinks = document.getElementById("nav-links");
+
+        hamburger?.addEventListener("click", () => {
+          navLinks.classList.toggle("active");
+        });
+        document.querySelectorAll(".nav-links a").forEach((a) => {
+          a.addEventListener("click", () => navLinks.classList.remove("active"));
+        });
+
+        const fadeElements = document.querySelectorAll(".fade-in");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+              }
+            });
+          },
+          { threshold: 0.5 }
+        );
+        fadeElements.forEach((el) => observer.observe(el));
+      });
+    </script>
+  </div>
+</body>
+
+</html>

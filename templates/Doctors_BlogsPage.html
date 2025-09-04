@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog Management</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        display: flex;
+        justify-content: space-around;
+        width: 80%;
+      }
+
+      .box {
+        background: white;
+        width: 45%;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        cursor: pointer;
+        transition: transform 0.3s;
+        border-top: 4px solid #578dcb;
+      }
+
+      .box:hover {
+        transform: scale(1.05);
+      }
+
+      h1 {
+        font-size: 2em;
+        margin-bottom: 20px;
+        color: #4f90d0;
+      }
+
+      p {
+        font-size: 1.2em;
+        color: #555;
+      }
+
+      button {
+        background: #19538b;
+        color: white;
+        padding: 15px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1em;
+        transition: background 0.3s;
+      }
+
+      button:hover {
+        background: #4f90d0;
+      }
+
+      /* Navbar */
+      nav {
+        background: white;
+        padding: 15px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 2px solid #578dcb;
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #19538b;
+      }
+
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+      }
+
+      .nav-links li {
+        display: inline-block;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: #578dcb;
+        font-weight: 500;
+        padding: 10px 20px;
+        border-radius: 25px;
+        transition: background 0.3s, color 0.3s;
+      }
+
+      /* Blue Hover Effect for Normal Links */
+      .nav-links a:not(.logout-btn):hover {
+        background: #19538b !important;
+        color: white;
+      }
+
+      /* Red Hover Effect for Logout */
+      .logout-btn {
+        color: #578dcb;
+      }
+
+      .logout-btn:hover {
+        background: #dc3545 !important;
+        color: white !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav>
+      <div class="logo">Doctor Blogs</div>
+      <ul class="nav-links">
+        <li><a href="/doctor_home">Home</a></li>
+        <li><a href="/blogs">Blogs</a></li>
+        <li><a href="/doctor_prescription">Prescriptions</a></li>
+        <li><a href="/patients_view">Patients</a></li>
+        <li>
+          <a href="/login" class="logout-btn" onclick="confirmLogout()">Logout</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container">
+      <!-- Box for Write Blog -->
+      <div
+        class="box"
+        onclick="window.location.href='/doctor_blogs/write_blogs'"
+      >
+        <h1>Write a Blog</h1>
+        <p>Click here to write a new blog for the clinic.</p>
+        <button>Write Blog</button>
+      </div>
+
+      <!-- Box for Manage Blogs -->
+      <div
+        class="box"
+        onclick="window.location.href='/doctor_blogs/manage_blogs'"
+      >
+        <h1>Manage Blogs</h1>
+        <p>Click here to manage existing blogs. View, edit or delete them.</p>
+        <button>Manage Blogs</button>
+      </div>
+    </div>
+  </body>
+</html>

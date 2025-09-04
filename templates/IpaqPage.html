@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IPAQ - International Physical Activity Questionnaire</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .survey-container {
+        background-color: #88bdf3;
+        border-radius: 8px;
+        padding: 20px;
+      }
+
+      .section {
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        /* border-bottom: 1px solid #eee; */
+      }
+
+      .section-title {
+        background-color: #19538b;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+
+      .question-container {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #ffffff;
+        border-radius: 5px;
+        /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); */
+      }
+
+      .question {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .options {
+        margin-bottom: 15px;
+      }
+
+      .time-input {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .time-input input {
+        width: 60px;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      input[type="number"] {
+        width: 60px;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      input[type="radio"] {
+        margin-right: 5px;
+      }
+
+      label {
+        margin-right: 15px;
+      }
+
+      .btn {
+        background-color: #19538b;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+      }
+
+      .btn:hover {
+        background-color: #19538b;
+      }
+
+      .navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .progress-bar {
+        width: 100%;
+        background-color: #e0e0e0;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+
+      .progress {
+        height: 10px;
+        background-color: #19538b;
+        border-radius: 4px;
+        transition: width 0.3s ease;
+      }
+
+      .error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="survey-container">
+      <h1>International Physical Activity Questionnaire (IPAQ)</h1>
+      <p>
+        This questionnaire asks about the time you spent being physically active
+        in the last 7 days.
+      </p>
+
+      <div class="progress-bar">
+        <div class="progress" id="progressBar" style="width: 0%"></div>
+      </div>
+
+      <form id="ipaqForm">
+        <!-- PART 1: JOB-RELATED PHYSICAL ACTIVITY -->
+        <div class="section" id="section1">
+          <h2 class="section-title">PART 1: JOB-RELATED PHYSICAL ACTIVITY</h2>
+
+          <div class="question-container">
+            <div class="question">
+              1. Do you currently have a job or do any work outside your
+              home?
+            </div>
+            <div class="options">
+              <input type="radio" id="job-yes" name="job" value="yes" />
+              <label for="job-yes">Yes</label>
+              <input type="radio" id="job-no" name="job" value="no" />
+              <label for="job-no">No</label>
+              <div class="error-message" id="job-error">
+                Please select an option
+              </div>
+            </div>
+          </div>
+
+          <div class="job-related hidden">
+            <p>
+              The next questions are about all the physical activity you did in
+              the last 7 days as part of your paid or unpaid work. This does not
+              include traveling to and from work.
+            </p>
+
+            <div class="question-container">
+              <div class="question">
+                2. During the last 7 days, on how many days did you do vigorous
+                physical activities like heavy lifting, digging, heavy
+                construction, or climbing up stairs as part of your work?
+              </div>
+              <p>
+                Think about only those physical activities that you did for at
+                least 10 minutes at a time.
+              </p>
+              <div class="options">
+                <input
+                  type="number"
+                  id="vigorous-job-days"
+                  name="vigorous-job-days"
+                  min="0"
+                  max="7"
+                  placeholder="0-7"
+                />
+                <label for="vigorous-job-days">days per week</label>
+                <div class="error-message" id="vigorous-job-days-error">
+                  Please enter a number between 0 and 7
+                </div>
+              </div>
+            </div>
+
+            <div class="question-container vigorous-job-time hidden">
+              <div class="question">
+                3. How much time did you usually spend on one of those days
+                doing vigorous physical activities as part of your work?
+              </div>
+              <div class="time-input">
+                <input
+                  type="number"
+                  id="vigorous-job-hours"
+                  name="vigorous-job-hours"
+                  min="0"
+                  max="24"
+                  placeholder="0"
+                />
+                <label for="vigorous-job-hours">hours per day</label>
+                <input
+                  type="number"
+                  id="vigorous-job-minutes"
+                  name="vigorous-job-minutes"
+                  min="0"
+                  max="59"
+                  placeholder="0"
+                />
+                <label for="vigorous-job-minutes">minutes per day</label>
+                <div class="error-message" id="vigorous-job-time-error">
+                  Please enter valid time
+                </div>
+              </div>
+            </div>
+
+            <div class="question-container">
+              <div class="question">
+                4. Again, think about only those physical activities that you
+                did for at least 10 minutes at a time. During the last 7 days,
+                on how many days did you do moderate physical activities like
+                carrying light loads as part of your work?
+              </div>
+              <p>Please do not include walking.</p>
+              <div class="options">
+                <input
+                  type="number"
+                  id="moderate-job-days"
+                  name="moderate-job-days"
+                  min="0"
+                  max="7"
+                  placeholder="0-7"
+                />
+                <label for="moderate-job-days">days per week</label>
+                <div class="error-message" id="moderate-job-days-error">
+                  Please enter a number between 0 and 7
+                </div>
+              </div>
+            </div>
+
+            <div class="question-container moderate-job-time hidden">
+              <div class="question">
+                5. How much time did you usually spend on one of those days
+                doing moderate physical activities as part of your work?
+              </div>
+              <div class="time-input">
+                <input
+                  type="number"
+                  id="moderate-job-hours"
+                  name="moderate-job-hours"
+                  min="0"
+                  max="24"
+                  placeholder="0"
+                />
+                <label for="moderate-job-hours">hours per day</label>
+                <input
+                  type="number"
+                  id="moderate-job-minutes"
+                  name="moderate-job-minutes"
+                  min="0"
+                  max="59"
+                  placeholder="0"
+                />
+                <label for="moderate-job-minutes">minutes per day</label>
+                <div class="error-message" id="moderate-job-time-error">
+                  Please enter valid time
+                </div>
+              </div>
+            </div>
+
+            <div class="question-container">
+              <div class="question">
+                6. During the last 7 days, on how many days did you walk for at
+                least 10 minutes at a time as part of your work?
+              </div>
+              <p>
+                Please do not count any walking you did to travel to or from
+                work.
+              </p>
+              <div class="options">
+                <input
+                  type="number"
+                  id="walking-job-days"
+                  name="walking-job-days"
+                  min="0"
+                  max="7"
+                  placeholder="0-7"
+                />
+                <label for="walking-job-days">days per week</label>
+                <div class="error-message" id="walking-job-days-error">
+                  Please enter a number between 0 and 7
+                </div>
+              </div>
+            </div>
+
+            <div class="question-container walking-job-time hidden">
+              <div class="question">
+                7. How much time did you usually spend on one of those days
+                walking as part of your work?
+              </div>
+              <div class="time-input">
+                <input
+                  type="number"
+                  id="walking-job-hours"
+                  name="walking-job-hours"
+                  min="0"
+                  max="24"
+                  placeholder="0"
+                />
+                <label for="walking-job-hours">hours per day</label>
+                <input
+                  type="number"
+                  id="walking-job-minutes"
+                  name="walking-job-minutes"
+                  min="0"
+                  max="59"
+                  placeholder="0"
+                />
+                <label for="walking-job-minutes">minutes per day</label>
+                <div class="error-message" id="walking-job-time-error">
+                  Please enter valid time
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="navigation">
+            <button type="button" class="btn" id="next1">Next</button>
+          </div>
+        </div>
+
+        <!-- PART 2: TRANSPORTATION PHYSICAL ACTIVITY -->
+        <div class="section hidden" id="section2">
+          <h2 class="section-title">
+            PART 2: TRANSPORTATION PHYSICAL ACTIVITY
+          </h2>
+          <p>
+            These questions are about how you traveled from place to place,
+            including to places like work, stores, movies, and so on.
+          </p>
+
+          <div class="question-container">
+            <div class="question">
+              8. During the last 7 days, on how many days did you travel in a
+              motor vehicle like a train, bus, car, or tram?
+            </div>
+            <div class="options">
+              <input
+                type="number"
+                id="motor-days"
+                name="motor-days"
+                min="0"
+                max="7"
+                placeholder="0-7"
+              />
+              <label for="motor-days">days per week</label>
+              <div class="error-message" id="motor-days-error">
+                Please enter a number between 0 and 7
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container motor-time hidden">
+            <div class="question">
+              9. How much time did you usually spend on one of those days
+              traveling in a train, bus, car, tram, or other kind of motor
+              vehicle?
+            </div>
+            <div class="time-input">
+              <input
+                type="number"
+                id="motor-hours"
+                name="motor-hours"
+                min="0"
+                max="24"
+                placeholder="0"
+              />
+              <label for="motor-hours">hours per day</label>
+              <input
+                type="number"
+                id="motor-minutes"
+                name="motor-minutes"
+                min="0"
+                max="59"
+                placeholder="0"
+              />
+              <label for="motor-minutes">minutes per day</label>
+              <div class="error-message" id="motor-time-error">
+                Please enter valid time
+              </div>
+            </div>
+          </div>
+
+          <p>
+            Now think only about the bicycling and walking you might have done
+            to travel to and from work, to do errands, or to go from place to
+            place.
+          </p>
+
+          <div class="question-container">
+            <div class="question">
+              10. During the last 7 days, on how many days did you bicycle for
+              at least 10 minutes at a time to go from place to place?
+            </div>
+            <div class="options">
+              <input
+                type="number"
+                id="bicycle-days"
+                name="bicycle-days"
+                min="0"
+                max="7"
+                placeholder="0-7"
+              />
+              <label for="bicycle-days">days per week</label>
+              <div class="error-message" id="bicycle-days-error">
+                Please enter a number between 0 and 7
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container bicycle-time hidden">
+            <div class="question">
+              11. How much time did you usually spend on one of those days to
+              bicycle from place to place?
+            </div>
+            <div class="time-input">
+              <input
+                type="number"
+                id="bicycle-hours"
+                name="bicycle-hours"
+                min="0"
+                max="24"
+                placeholder="0"
+              />
+              <label for="bicycle-hours">hours per day</label>
+              <input
+                type="number"
+                id="bicycle-minutes"
+                name="bicycle-minutes"
+                min="0"
+                max="59"
+                placeholder="0"
+              />
+              <label for="bicycle-minutes">minutes per day</label>
+              <div class="error-message" id="bicycle-time-error">
+                Please enter valid time
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container">
+            <div class="question">
+              12. During the last 7 days, on how many days did you walk for at
+              least 10 minutes at a time to go from place to place?
+            </div>
+            <div class="options">
+              <input
+                type="number"
+                id="walking-transport-days"
+                name="walking-transport-days"
+                min="0"
+                max="7"
+                placeholder="0-7"
+              />
+              <label for="walking-transport-days">days per week</label>
+              <div class="error-message" id="walking-transport-days-error">
+                Please enter a number between 0 and 7
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container walking-transport-time hidden">
+            <div class="question">
+              13. How much time did you usually spend on one of those days
+              walking from place to place?
+            </div>
+            <div class="time-input">
+              <input
+                type="number"
+                id="walking-transport-hours"
+                name="walking-transport-hours"
+                min="0"
+                max="24"
+                placeholder="0"
+              />
+              <label for="walking-transport-hours">hours per day</label>
+              <input
+                type="number"
+                id="walking-transport-minutes"
+                name="walking-transport-minutes"
+                min="0"
+                max="59"
+                placeholder="0"
+              />
+              <label for="walking-transport-minutes">minutes per day</label>
+              <div class="error-message" id="walking-transport-time-error">
+                Please enter valid time
+              </div>
+            </div>
+          </div>
+
+          <div class="navigation">
+            <button type="button" class="btn" id="prev2">Previous</button>
+            <button type="button" class="btn" id="next2">Next</button>
+          </div>
+        </div>
+
+        <!-- PART 3: HOUSEWORK, HOUSE MAINTENANCE, AND CARING FOR FAMILY -->
+        <div class="section hidden" id="section3">
+          <h2 class="section-title">
+            PART 3: HOUSEWORK, HOUSE MAINTENANCE, AND CARING FOR FAMILY
+          </h2>
+          <p>
+            This section is about some of the physical activities you might have
+            done in the last 7 days in and around your home, like housework,
+            gardening, yard work, general maintenance work, and caring for your
+            family.
+          </p>
+
+          <div class="question-container">
+            <div class="question">
+              14. Think about only those physical activities that you did for at
+              least 10 minutes at a time. During the last 7 days, on how many
+              days did you do vigorous physical activities like heavy lifting,
+              chopping wood, shoveling snow, or digging in the garden or yard?
+            </div>
+            <div class="options">
+              <input
+                type="number"
+                id="vigorous-garden-days"
+                name="vigorous-garden-days"
+                min="0"
+                max="7"
+                placeholder="0-7"
+              />
+              <label for="vigorous-garden-days">days per week</label>
+              <div class="error-message" id="vigorous-garden-days-error">
+                Please enter a number between 0 and 7
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container vigorous-garden-time hidden">
+            <div class="question">
+              15. How much time did you usually spend on one of those days doing
+              vigorous physical activities in the garden or yard?
+            </div>
+            <div class="time-input">
+              <input
+                type="number"
+                id="vigorous-garden-hours"
+                name="vigorous-garden-hours"
+                min="0"
+                max="24"
+                placeholder="0"
+              />
+              <label for="vigorous-garden-hours">hours per day</label>
+              <input
+                type="number"
+                id="vigorous-garden-minutes"
+                name="vigorous-garden-minutes"
+                min="0"
+                max="59"
+                placeholder="0"
+              />
+              <label for="vigorous-garden-minutes">minutes per day</label>
+              <div class="error-message" id="vigorous-garden-time-error">
+                Please enter valid time
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container">
+            <div class="question">
+              16. Again, think about only those physical activities that you did
+              for at least 10 minutes at a time. During the last 7 days, on how
+              many days did you do moderate activities like carrying light
+              loads, sweeping, washing windows, and raking in the garden or
+              yard?
+            </div>
+            <div class="options">
+              <input
+                type="number"
+                id="moderate-garden-days"
+                name="moderate-garden-days"
+                min="0"
+                max="7"
+                placeholder="0-7"
+              />
+              <label for="moderate-garden-days">days per week</label>
+              <div class="error-message" id="moderate-garden-days-error">
+                Please enter a number between 0 and 7
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container moderate-garden-time hidden">
+            <div class="question">
+              17. How much time did you usually spend on one of those days doing
+              moderate physical activities in the garden or yard?
+            </div>
+            <div class="time-input">
+              <input
+                type="number"
+                id="moderate-garden-hours"
+                name="moderate-garden-hours"
+                min="0"
+                max="24"
+                placeholder="0"
+              />
+              <label for="moderate-garden-hours">hours per day</label>
+              <input
+                type="number"
+                id="moderate-garden-minutes"
+                name="moderate-garden-minutes"
+                min="0"
+                max="59"
+                placeholder="0"
+              />
+              <label for="moderate-garden-minutes">minutes per day</label>
+              <div class="error-message" id="moderate-garden-time-error">
+                Please enter valid time
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container">
+            <div class="question">
+              18. Once again, think about only those physical activities that
+              you did for at least 10 minutes at a time. During the last 7 days,
+              on how many days did you do moderate activities like carrying
+              light loads, washing windows, scrubbing floors and sweeping inside
+              your home?
+            </div>
+            <div class="options">
+              <input
+                type="number"
+                id="moderate-home-days"
+                name="moderate-home-days"
+                min="0"
+                max="7"
+                placeholder="0-7"
+              />
+              <label for="moderate-home-days">days per week</label>
+              <div class="error-message" id="moderate-home-days-error">
+                Please enter a number between 0 and 7
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container moderate-home-time hidden">
+            <div class="question">
+              19. How much time did you usually spend on one of those days doing
+              moderate physical activities inside your home?
+            </div>
+            <div class="time-input">
+              <input
+                type="number"
+                id="moderate-home-hours"
+                name="moderate-home-hours"
+                min="0"
+                max="24"
+                placeholder="0"
+              />
+              <label for="moderate-home-hours">hours per day</label>
+              <input
+                type="number"
+                id="moderate-home-minutes"
+                name="moderate-home-minutes"
+                min="0"
+                max="59"
+                placeholder="0"
+              />
+              <label for="moderate-home-minutes">minutes per day</label>
+              <div class="error-message" id="moderate-home-time-error">
+                Please enter valid time
+              </div>
+            </div>
+          </div>
+
+          <div class="navigation">
+            <button type="button" class="btn" id="prev3">Previous</button>
+            <button type="button" class="btn" id="next3">Next</button>
+          </div>
+        </div>
+
+        <!-- PART 4: RECREATION, SPORT, AND LEISURE-TIME PHYSICAL ACTIVITY -->
+        <div class="section hidden" id="section4">
+          <h2 class="section-title">
+            PART 4: RECREATION, SPORT, AND LEISURE-TIME PHYSICAL ACTIVITY
+          </h2>
+          <p>
+            This section is about all the physical activities that you did in
+            the last 7 days solely for recreation, sport, exercise or leisure.
+            Please do not include any activities you have already mentioned.
+          </p>
+
+          <div class="question-container">
+            <div class="question">
+              20. Not counting any walking you have already mentioned, during
+              the last 7 days, on how many days did you walk for at least 10
+              minutes at a time in your leisure time?
+            </div>
+            <div class="options">
+              <input
+                type="number"
+                id="walking-leisure-days"
+                name="walking-leisure-days"
+                min="0"
+                max="7"
+                placeholder="0-7"
+              />
+              <label for="walking-leisure-days">days per week</label>
+              <div class="error-message" id="walking-leisure-days-error">
+                Please enter a number between 0 and 7
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container walking-leisure-time hidden">
+            <div class="question">
+              21. How much time did you usually spend on one of those days
+              walking in your leisure time?
+            </div>
+            <div class="time-input">
+              <input
+                type="number"
+                id="walking-leisure-hours"
+                name="walking-leisure-hours"
+                min="0"
+                max="24"
+                placeholder="0"
+              />
+              <label for="walking-leisure-hours">hours per day</label>
+              <input
+                type="number"
+                id="walking-leisure-minutes"
+                name="walking-leisure-minutes"
+                min="0"
+                max="59"
+                placeholder="0"
+              />
+              <label for="walking-leisure-minutes">minutes per day</label>
+              <div class="error-message" id="walking-leisure-time-error">
+                Please enter valid time
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container">
+            <div class="question">
+              22. Think about only those physical activities that you did for at
+              least 10 minutes at a time. During the last 7 days, on how many
+              days did you do vigorous physical activities like aerobics,
+              running, fast bicycling, or fast swimming in your leisure time?
+            </div>
+            <div class="options">
+              <input
+                type="number"
+                id="vigorous-leisure-days"
+                name="vigorous-leisure-days"
+                min="0"
+                max="7"
+                placeholder="0-7"
+              />
+              <label for="vigorous-leisure-days">days per week</label>
+              <div class="error-message" id="vigorous-leisure-days-error">
+                Please enter a number between 0 and 7
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container vigorous-leisure-time hidden">
+            <div class="question">
+              23. How much time did you usually spend on one of those days doing
+              vigorous physical activities in your leisure time?
+            </div>
+            <div class="time-input">
+              <input
+                type="number"
+                id="vigorous-leisure-hours"
+                name="vigorous-leisure-hours"
+                min="0"
+                max="24"
+                placeholder="0"
+              />
+              <label for="vigorous-leisure-hours">hours per day</label>
+              <input
+                type="number"
+                id="vigorous-leisure-minutes"
+                name="vigorous-leisure-minutes"
+                min="0"
+                max="59"
+                placeholder="0"
+              />
+              <label for="vigorous-leisure-minutes">minutes per day</label>
+              <div class="error-message" id="vigorous-leisure-time-error">
+                Please enter valid time
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container">
+            <div class="question">
+              24. Again, think about only those physical activities that you did
+              for at least 10 minutes at a time. During the last 7 days, on how
+              many days did you do moderate physical activities like bicycling
+              at a regular pace, swimming at a regular pace, and doubles tennis
+              in your leisure time?
+            </div>
+            <div class="options">
+              <input
+                type="number"
+                id="moderate-leisure-days"
+                name="moderate-leisure-days"
+                min="0"
+                max="7"
+                placeholder="0-7"
+              />
+              <label for="moderate-leisure-days">days per week</label>
+              <div class="error-message" id="moderate-leisure-days-error">
+                Please enter a number between 0 and 7
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container moderate-leisure-time hidden">
+            <div class="question">
+              25. How much time did you usually spend on one of those days doing
+              moderate physical activities in your leisure time?
+            </div>
+            <div class="time-input">
+              <input
+                type="number"
+                id="moderate-leisure-hours"
+                name="moderate-leisure-hours"
+                min="0"
+                max="24"
+                placeholder="0"
+              />
+              <label for="moderate-leisure-hours">hours per day</label>
+              <input
+                type="number"
+                id="moderate-leisure-minutes"
+                name="moderate-leisure-minutes"
+                min="0"
+                max="59"
+                placeholder="0"
+              />
+              <label for="moderate-leisure-minutes">minutes per day</label>
+              <div class="error-message" id="moderate-leisure-time-error">
+                Please enter valid time
+              </div>
+            </div>
+          </div>
+
+          <div class="navigation">
+            <button type="button" class="btn" id="prev4">Previous</button>
+            <button type="button" class="btn" id="next4">Next</button>
+          </div>
+        </div>
+
+        <!-- PART 5: TIME SPENT SITTING -->
+        <div class="section hidden" id="section5">
+          <h2 class="section-title">PART 5: TIME SPENT SITTING</h2>
+          <p>
+            The last questions are about the time you spend sitting while at
+            work, at home, while doing course work and during leisure time. This
+            may include time spent sitting at a desk, visiting friends, reading
+            or sitting or lying down to watch television. Do not include any
+            time spent sitting in a motor vehicle that you have already told me
+            about.
+          </p>
+
+          <div class="question-container">
+            <div class="question">
+              26. During the last 7 days, how much time did you usually spend
+              sitting on a weekday?
+            </div>
+            <div class="time-input">
+              <input
+                type="number"
+                id="sitting-weekday-hours"
+                name="sitting-weekday-hours"
+                min="0"
+                max="24"
+                placeholder="0"
+              />
+              <label for="sitting-weekday-hours">hours per day</label>
+              <input
+                type="number"
+                id="sitting-weekday-minutes"
+                name="sitting-weekday-minutes"
+                min="0"
+                max="59"
+                placeholder="0"
+              />
+              <label for="sitting-weekday-minutes">minutes per day</label>
+              <div class="error-message" id="sitting-weekday-error">
+                Please enter valid time
+              </div>
+            </div>
+          </div>
+
+          <div class="question-container">
+            <div class="question">
+              27. During the last 7 days, how much time did you usually spend
+              sitting on a weekend day?
+            </div>
+            <div class="time-input">
+              <input
+                type="number"
+                id="sitting-weekend-hours"
+                name="sitting-weekend-hours"
+                min="0"
+                max="24"
+                placeholder="0"
+              />
+              <label for="sitting-weekend-hours">hours per day</label>
+              <input
+                type="number"
+                id="sitting-weekend-minutes"
+                name="sitting-weekend-minutes"
+                min="0"
+                max="59"
+                placeholder="0"
+              />
+              <label for="sitting-weekend-minutes">minutes per day</label>
+              <div class="error-message" id="sitting-weekend-error">
+                Please enter valid time
+              </div>
+            </div>
+          </div>
+
+          <div class="navigation">
+            <button type="button" class="btn" id="prev5">Previous</button>
+            <button type="button" class="btn" id="submit">Submit</button>
+          </div>
+        </div>
+
+        <!-- THANK YOU SECTION -->
+        <div class="section hidden" id="thank-you">
+          <h2 class="section-title">Thank You!</h2>
+          <p>
+            Thank you for completing the International Physical Activity
+            Questionnaire (IPAQ).
+          </p>
+          <p>Your responses have been recorded.</p>
+
+          <div id="results-container" class="question-container">
+            <h3>Summary of Your Physical Activity</h3>
+            <div id="results-summary"></div>
+          </div>
+          <div id="summary-container">
+            <h2>📊 Activity Summary</h2>
+            <p>
+              <strong>Total MET-minutes:</strong>
+              <span id="summary-total-met">0</span>
+            </p>
+            <p>
+              <strong>Vigorous Activity MET:</strong>
+              <span id="summary-vigorous-met">0</span>
+            </p>
+            <p>
+              <strong>Moderate Activity MET:</strong>
+              <span id="summary-moderate-met">0</span>
+            </p>
+            <p>
+              <strong>Walking Activity MET:</strong>
+              <span id="summary-walking-met">0</span>
+            </p>
+            <p>
+              <strong>Activity Category:</strong>
+              <span id="summary-category">Unknown</span>
+            </p>
+          </div>
+
+          <button type="button" class="btn" id="submitIPAQ">Submit</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("📌 DOM fully loaded!");
+
+        // Retrieve patient ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const patientId = urlParams.get("patient_id");
+
+        if (!patientId) {
+          alert("Error: Patient ID is missing!");
+        } else {
+          console.log("✅ Patient ID Retrieved:", patientId);
+        }
+
+        // Total number of form sections
+        const totalSections = 5;
+        let currentSection = 1;
+
+        // Update progress bar
+        function updateProgressBar() {
+          const progressPercentage =
+            ((currentSection - 1) / totalSections) * 100;
+          const progressBar = document.getElementById("progressBar");
+          if (progressBar) {
+            progressBar.style.width = progressPercentage + "%";
+          }
+        }
+        updateProgressBar();
+
+        // Show or hide error messages
+        function showError(elementId, show) {
+          const errorElement = document.getElementById(elementId);
+          if (errorElement) {
+            errorElement.style.display = show ? "block" : "none";
+          }
+        }
+        function calculateResults() {
+          let totalMETMinutes = 0;
+          let vigorousActivity = 0;
+          let moderateActivity = 0;
+          let walkingActivity = 0;
+
+          // Job-related physical activity
+          if (
+            document.querySelector('input[name="job"]:checked')?.value === "yes"
+          ) {
+            vigorousActivity +=
+              getValueOrZero("vigorous-job-days") *
+              getValueOrZero("vigorous-job-hours") *
+              60 *
+              8.0;
+            moderateActivity +=
+              getValueOrZero("moderate-job-days") *
+              getValueOrZero("moderate-job-hours") *
+              60 *
+              4.0;
+            walkingActivity +=
+              getValueOrZero("walking-job-days") *
+              getValueOrZero("walking-job-hours") *
+              60 *
+              3.3;
+          }
+
+          // Bicycling & Walking for Transport
+          moderateActivity +=
+            getValueOrZero("bicycle-days") *
+            getValueOrZero("bicycle-hours") *
+            60 *
+            6.0;
+          walkingActivity +=
+            getValueOrZero("walking-transport-days") *
+            getValueOrZero("walking-transport-hours") *
+            60 *
+            3.3;
+
+          // Housework, Gardening
+          vigorousActivity +=
+            getValueOrZero("vigorous-garden-days") *
+            getValueOrZero("vigorous-garden-hours") *
+            60 *
+            5.5;
+          moderateActivity +=
+            getValueOrZero("moderate-garden-days") *
+            getValueOrZero("moderate-garden-hours") *
+            60 *
+            4.0;
+
+          // Leisure Activities
+          walkingActivity +=
+            getValueOrZero("walking-leisure-days") *
+            getValueOrZero("walking-leisure-hours") *
+            60 *
+            3.3;
+          vigorousActivity +=
+            getValueOrZero("vigorous-leisure-days") *
+            getValueOrZero("vigorous-leisure-hours") *
+            60 *
+            8.0;
+          moderateActivity +=
+            getValueOrZero("moderate-leisure-days") *
+            getValueOrZero("moderate-leisure-hours") *
+            60 *
+            4.0;
+
+          // Calculate total MET-minutes
+          totalMETMinutes =
+            vigorousActivity + moderateActivity + walkingActivity;
+
+          // Determine physical activity category
+          let activityCategory = "Low";
+          if (vigorousActivity >= 1500 || totalMETMinutes >= 3000) {
+            activityCategory = "High";
+          } else if (totalMETMinutes >= 600) {
+            activityCategory = "Moderate";
+          }
+
+          // Display values in summary section
+          document.getElementById("summary-total-met").innerText =
+            Math.round(totalMETMinutes);
+          document.getElementById("summary-vigorous-met").innerText =
+            Math.round(vigorousActivity);
+          document.getElementById("summary-moderate-met").innerText =
+            Math.round(moderateActivity);
+          document.getElementById("summary-walking-met").innerText =
+            Math.round(walkingActivity);
+          document.getElementById("summary-category").innerText =
+            activityCategory;
+
+          console.log("📊 Summary Updated:", {
+            totalMETMinutes,
+            vigorousActivity,
+            moderateActivity,
+            walkingActivity,
+            activityCategory,
+          });
+        }
+
+        // Validate numeric input
+        function validateField(field, min, max) {
+          const value = field.value.trim();
+          if (value === "") return true; // Empty is valid for optional fields
+          const numValue = parseInt(value);
+          return !isNaN(numValue) && numValue >= min && numValue <= max;
+        }
+
+        // Handle job-related visibility
+        document.querySelectorAll('input[name="job"]').forEach((radio) => {
+          radio.addEventListener("change", function () {
+            document.querySelectorAll(".job-related").forEach((el) => {
+              el.classList.toggle("hidden", this.value !== "yes");
+            });
+          });
+        });
+
+        // Show/hide time input fields based on days input
+        function setupDaysInputListener(daysInputId, timeContainerClass) {
+          const daysInput = document.getElementById(daysInputId);
+          if (daysInput) {
+            daysInput.addEventListener("input", function () {
+              document
+                .querySelectorAll("." + timeContainerClass)
+                .forEach((el) =>
+                  el.classList.toggle("hidden", parseInt(this.value) <= 0)
+                );
+            });
+          }
+        }
+
+        // Set up listeners for all activity inputs
+        const activities = [
+          "vigorous-job",
+          "moderate-job",
+          "walking-job",
+          "motor",
+          "bicycle",
+          "walking-transport",
+          "vigorous-garden",
+          "moderate-garden",
+          "moderate-home",
+          "walking-leisure",
+          "vigorous-leisure",
+          "moderate-leisure",
+        ];
+        activities.forEach((activity) =>
+          setupDaysInputListener(`${activity}-days`, `${activity}-time`)
+        );
+
+        // Navigation functions
+        function showSection(sectionNumber) {
+          for (let i = 1; i <= totalSections + 1; i++) {
+            const section = document.getElementById("section" + i);
+            if (section) {
+              section.classList.toggle("hidden", i !== sectionNumber);
+            }
+          }
+
+          document.getElementById("thank-you")?.classList.add("hidden");
+
+          if (sectionNumber <= totalSections) {
+            document
+              .getElementById("section" + sectionNumber)
+              ?.classList.remove("hidden");
+            currentSection = sectionNumber;
+            updateProgressBar();
+          } else {
+            document.getElementById("thank-you")?.classList.remove("hidden");
+          }
+        }
+
+        // Navigation button event listeners
+        function addNavButtonListener(
+          nextId,
+          sectionToShow,
+          validationRequired = true
+        ) {
+          const button = document.getElementById(nextId);
+          if (button) {
+            button.addEventListener("click", function () {
+              if (!validationRequired || validateSection(currentSection)) {
+                showSection(sectionToShow);
+              }
+            });
+          }
+        }
+
+        // Add navigation listeners
+        addNavButtonListener("next1", 2);
+        addNavButtonListener("prev2", 1, false);
+        addNavButtonListener("next2", 3);
+        addNavButtonListener("prev3", 2, false);
+        addNavButtonListener("next3", 4);
+        addNavButtonListener("prev4", 3, false);
+        addNavButtonListener("next4", 5);
+        addNavButtonListener("prev5", 4, false);
+        addNavButtonListener("submit", 6);
+
+        document
+          .getElementById("restart")
+          ?.addEventListener("click", function () {
+            document.getElementById("ipaqForm")?.reset();
+            showSection(1);
+          });
+
+        // Validate sections
+        function validateSection(sectionNumber) {
+          let isValid = true;
+
+          function validateNumberInput(inputId, min, max, errorId) {
+            const input = document.getElementById(inputId);
+            if (input && !validateField(input, min, max)) {
+              showError(errorId, true);
+              isValid = false;
+            } else {
+              showError(errorId, false);
+            }
+          }
+
+          function validateTimeInput(hoursId, minutesId, errorId) {
+            const hoursInput = document.getElementById(hoursId);
+            const minutesInput = document.getElementById(minutesId);
+            const hoursValid = validateField(hoursInput, 0, 24);
+            const minutesValid = validateField(minutesInput, 0, 59);
+            const hasValue =
+              parseInt(hoursInput.value) > 0 ||
+              parseInt(minutesInput.value) > 0;
+
+            if (!hoursValid || !minutesValid || !hasValue) {
+              showError(errorId, true);
+              isValid = false;
+            } else {
+              showError(errorId, false);
+            }
+          }
+
+          if (sectionNumber === 5) {
+            validateTimeInput(
+              "sitting-weekday-hours",
+              "sitting-weekday-minutes",
+              "sitting-weekday-error"
+            );
+            validateTimeInput(
+              "sitting-weekend-hours",
+              "sitting-weekend-minutes",
+              "sitting-weekend-error"
+            );
+          }
+
+          return isValid;
+        }
+
+        // Helper function to get numeric value or zero if empty
+        function getValueOrZero(elementId) {
+          const element = document.getElementById(elementId);
+          return element && !isNaN(parseInt(element.value))
+            ? parseInt(element.value)
+            : 0;
+        }
+
+        function submitIPAQData() {
+          calculateResults(); // Ensure latest values are shown in summary
+
+          if (!patientId) {
+            alert("Patient ID is missing!");
+            return;
+          }
+
+          const data = {
+            ipaQ_total_met: parseInt(
+              document.getElementById("summary-total-met").innerText
+            ),
+            ipaQ_vigorous_met: parseInt(
+              document.getElementById("summary-vigorous-met").innerText
+            ),
+            ipaQ_moderate_met: parseInt(
+              document.getElementById("summary-moderate-met").innerText
+            ),
+            ipaQ_walking_met: parseInt(
+              document.getElementById("summary-walking-met").innerText
+            ),
+            ipaQ_category:
+              document.getElementById("summary-category").innerText,
+          };
+
+          console.log("🔍 Sending IPAQ Data:", data);
+
+          fetch(`http://127.0.0.1:5000/patients/${patientId}/ipaq`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("✅ IPAQ Response:", data);
+              if (data.message) {
+                alert("✅ Data saved successfully! Redirecting to Homepage...");
+                window.location.href = "http://127.0.0.1:5000/assisstant_home";
+              } else {
+                alert("❌ Error: " + data.error);
+              }
+            })
+            .catch((error) => {
+              console.error("❌ Error:", error);
+              alert("❌ Failed to submit data. Please try again.");
+            });
+        }
+
+        // Attach event listener to Submit Button
+        const submitButton = document.getElementById("submitIPAQ");
+        if (submitButton) {
+          submitButton.addEventListener("click", submitIPAQData);
+        } else {
+          console.error("❌ Error: 'submitIPAQ' button not found!");
+        }
+      });
+    </script>
+  </body>
+</html>
