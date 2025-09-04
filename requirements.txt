@@ -1,9 +1,0 @@
-Flask
-flask-cors
-gunicorn
-supabase
-openai
-bcrypt
-pandas
-pillow
-matplotlib
